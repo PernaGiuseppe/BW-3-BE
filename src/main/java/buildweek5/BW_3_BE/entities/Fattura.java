@@ -3,7 +3,6 @@ package buildweek5.BW_3_BE.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -26,7 +25,7 @@ public class Fattura {
     private LocalDate data;
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal importo;
+    private double importo;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

@@ -40,9 +40,13 @@ public class Utente implements UserDetails {
 
     @Column(nullable = false)
     private String cognome;
-    
+
     private String avatar;
 
+  /*  @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private RuoloUtente ruoloUtente;*/
+    
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "utente_roles", joinColumns = @JoinColumn(name = "utente_id"))
