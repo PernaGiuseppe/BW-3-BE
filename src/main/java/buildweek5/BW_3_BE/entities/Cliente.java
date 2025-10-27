@@ -3,7 +3,6 @@ package buildweek5.BW_3_BE.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -34,12 +33,12 @@ public class Cliente {
     private LocalDate dataUltimoContatto;
 
     @Column(precision = 15, scale = 2)
-    private BigDecimal fatturatoAnnuale;
+    private double fatturatoAnnuale;
 
     @Column(unique = true)
     private String pec;
 
-    private String telefono;
+    private int telefono;
 
     private String emailContatto;
 
@@ -49,7 +48,6 @@ public class Cliente {
 
     private String telefonoContatto;
 
-    @Lob
     private String logoAziendale;
 
     @Enumerated(EnumType.STRING)

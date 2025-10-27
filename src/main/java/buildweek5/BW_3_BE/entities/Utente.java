@@ -40,8 +40,7 @@ public class Utente implements UserDetails {
 
     @Column(nullable = false)
     private String cognome;
-
-    @Lob
+    
     private String avatar;
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -49,7 +48,7 @@ public class Utente implements UserDetails {
     @CollectionTable(name = "utente_roles", joinColumns = @JoinColumn(name = "utente_id"))
     @Column(name = "role")
     private Set<Role> roles = new HashSet<>();
-    
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
