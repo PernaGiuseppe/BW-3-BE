@@ -8,9 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Entity
 @Table(name = "utenti")
@@ -23,6 +21,7 @@ public class Utente implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -43,31 +42,24 @@ public class Utente implements UserDetails {
 
     private String avatar;
 
-  /*  @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private RuoloUtente ruoloUtente;*/
-    
-    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "utente_roles", joinColumns = @JoinColumn(name = "utente_id"))
-    @Column(name = "role")
-    private Set<Role> roles = new HashSet<>();
+    @Column(nullable = false)
+    private RuoloUtente role;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.name()))
-                .collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return username;
+        return this.username;
     }
 
     @Override

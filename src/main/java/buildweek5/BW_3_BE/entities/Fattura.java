@@ -3,6 +3,7 @@ package buildweek5.BW_3_BE.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -16,6 +17,7 @@ public class Fattura {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -24,8 +26,8 @@ public class Fattura {
     @Column(nullable = false)
     private LocalDate data;
 
-    @Column(nullable = false, precision = 10, scale = 2)
-    private double importo;
+    @Column(nullable = false, precision = 15, scale = 2)
+    private BigDecimal importo;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
