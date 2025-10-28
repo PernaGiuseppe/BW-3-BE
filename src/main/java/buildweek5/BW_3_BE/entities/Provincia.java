@@ -1,9 +1,6 @@
 package buildweek5.BW_3_BE.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -11,12 +8,18 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
+@AllArgsConstructor
+@Builder
 public class Provincia {
 
     @Id
-    @Column(nullable = false, unique = true, length = 10)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
+    @Column(name = "id_provincia")
+    private Long id;
+
+    @Column(nullable = false, unique = true)
     private String sigla;
 
     @Column(nullable = false)
@@ -24,4 +27,11 @@ public class Provincia {
 
     @Column(nullable = false)
     private String regione;
+
+    public Provincia(String sigla, String nome, String regione) {
+        this.sigla = sigla;
+        this.nome = nome;
+        this.regione = regione;
+    }
+
 }

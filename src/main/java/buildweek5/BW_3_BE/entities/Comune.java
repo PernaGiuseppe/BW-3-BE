@@ -8,8 +8,9 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
+@AllArgsConstructor
+@Builder
 //(exclude = "provincia")
 public class Comune {
 
@@ -28,6 +29,7 @@ public class Comune {
     private String denominazione;
 
     @ManyToOne
-    @JoinColumn(name = "provincia_sigla", nullable = false)
+    @JoinColumn(name = "provincia_id", nullable = false)
     private Provincia provincia;
+
 }
