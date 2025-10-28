@@ -55,4 +55,13 @@ public class Cliente {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoCliente tipoCliente;
+
+    @OneToOne
+    @JoinColumn(name = "indirizzo_legale_id", nullable = false)
+    private Indirizzo indirizzoLegale;
+
+    @OneToOne
+    @JoinColumn(name = "indirizzo_operativo_id", nullable = false)
+    private Indirizzo indirizzoOperativo;
+
 }

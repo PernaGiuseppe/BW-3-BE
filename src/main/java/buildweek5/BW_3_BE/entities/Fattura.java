@@ -29,9 +29,9 @@ public class Fattura {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal importo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private StatoFattura stato;
+    @OneToOne
+    @JoinColumn(name = "stato_fattura_id", nullable = false)
+    private StatoFattura statoFattura;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)

@@ -9,7 +9,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"cliente", "comune"})
+@ToString
+//(exclude = {"comune"})
 public class Indirizzo {
 
     @Id
@@ -36,7 +37,5 @@ public class Indirizzo {
     @JoinColumn(name = "comune_id", nullable = false)
     private Comune comune;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+
 }

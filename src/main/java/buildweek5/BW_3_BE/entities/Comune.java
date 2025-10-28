@@ -9,7 +9,8 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "provincia")
+@ToString
+//(exclude = "provincia")
 public class Comune {
 
     @Id
