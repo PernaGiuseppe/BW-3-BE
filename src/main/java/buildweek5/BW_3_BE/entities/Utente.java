@@ -45,7 +45,7 @@ public class Utente implements UserDetails {
 
 
     @OneToMany
-    @Column(nullable = false)
+    @JoinColumn(nullable = false)
     private List<RuoloUtente> ruoli = new ArrayList<>();
 
 
