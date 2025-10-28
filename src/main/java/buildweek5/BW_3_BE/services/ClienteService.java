@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -30,7 +29,6 @@ public class ClienteService {
     @Autowired
     private ComuneRepository comuneRepo;
 
-    @Transactional
     public Cliente createCliente(ClienteDTO dto) {
         // Validazione partita IVA e email univoche
         if (clienteRepo.findByPartitaIva(dto.getPartitaIva()).isPresent()) {
@@ -95,7 +93,6 @@ public class ClienteService {
         return clienteRepo.findAll(pageable);
     }
 
-    @Transactional
     public Cliente updateCliente(Long id, ClienteDTO dto) {
         Cliente cliente = findById(id);
 
@@ -131,10 +128,8 @@ public class ClienteService {
         return clienteRepo.save(cliente);
     }
 
-    @Transactional
     public void deleteCliente(Long id) {
         Cliente cliente = findById(id);
         clienteRepo.delete(cliente);
     }
 }
-

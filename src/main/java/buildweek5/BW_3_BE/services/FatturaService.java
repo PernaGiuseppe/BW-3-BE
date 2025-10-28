@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class FatturaService {
@@ -27,11 +26,9 @@ public class FatturaService {
     @Autowired
     private StatoFatturaRepository statoRepo;
 
-    @Transactional
     public Fattura createFattura(FatturaDTO dto) {
         Cliente cliente = clienteRepo.findById(dto.getClienteId())
                 .orElseThrow(() -> new NotFoundException("Cliente non trovato"));
-
         StatoFattura stato = statoRepo.findById(dto.getStatoFatturaId())
                 .orElseThrow(() -> new NotFoundException("Stato fattura non trovato"));
 
@@ -60,13 +57,10 @@ public class FatturaService {
         return fatturaRepo.findAll(pageable);
     }
 
-    @Transactional
     public Fattura updateFattura(Long id, FatturaDTO dto) {
         Fattura fattura = findById(id);
-
         Cliente cliente = clienteRepo.findById(dto.getClienteId())
                 .orElseThrow(() -> new NotFoundException("Cliente non trovato"));
-
         StatoFattura stato = statoRepo.findById(dto.getStatoFatturaId())
                 .orElseThrow(() -> new NotFoundException("Stato fattura non trovato"));
 
@@ -79,10 +73,8 @@ public class FatturaService {
         return fatturaRepo.save(fattura);
     }
 
-    @Transactional
     public void deleteFattura(Long id) {
         Fattura fattura = findById(id);
         fatturaRepo.delete(fattura);
     }
 }
-

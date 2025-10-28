@@ -10,7 +10,6 @@ import buildweek5.BW_3_BE.repositories.UtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
@@ -26,7 +25,6 @@ public class UtenteService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Transactional
     public Utente register(UtenteRegistrazioneDTO dto) {
         if (utenteRepo.findByUsername(dto.getUsername()).isPresent()) {
             throw new BadRequestException("Username già esistente");
@@ -47,7 +45,6 @@ public class UtenteService {
         // Assegna ruolo USER di default
         RuoloUtente ruolo = ruoloRepo.findByRuoloUtente("USER")
                 .orElseThrow(() -> new NotFoundException("Ruolo USER non trovato"));
-
         utente.setRuoli(new ArrayList<>());
         utente.getRuoli().add(ruolo);
 
@@ -64,4 +61,3 @@ public class UtenteService {
                 .orElseThrow(() -> new NotFoundException("Utente con username " + username + " non trovato"));
     }
 }
-
