@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,7 +55,6 @@ public class ComuniService {
                                 withIgnoreLeadingWhiteSpace(true).
                                 build();
 
-                // quando faccio il parse del csvToBean mi torna una lista di ProvinciaRepresentation
                 return csvToBean.parse()
                         .stream()
                         .map(csv -> {
@@ -65,10 +65,15 @@ public class ComuniService {
                                     .build();
 
                             provinciaRepository.findByNomeIgnoreCase(csv.getProvincia())
-                                    .ifPresent(comune::setProvincia);
+                                    .ifPresentOrElse(
+                                            comune::setProvincia,
+                                            () -> System.out.println("Provincia non trovata per comune: " + csv.getCodiceProvincia()
+                                                    + csv.getNomeComune() + " (" + csv.getProvincia() + ")")
+                                    );
 
                             return comune;
                         })
+                        .filter(c -> c.getProvincia() != null) // salva solo quelli con provincia valida
                         .collect(Collectors.toSet());
         }
     }
