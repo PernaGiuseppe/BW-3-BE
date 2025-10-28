@@ -1,7 +1,7 @@
 package buildweek5.BW_3_BE.services;
 
 import buildweek5.BW_3_BE.entities.Comune;
-import buildweek5.BW_3_BE.entities.Provincia;
+import buildweek5.BW_3_BE.exceptions.BadRequestException;
 import buildweek5.BW_3_BE.repositories.ComuneRepository;
 import buildweek5.BW_3_BE.repositories.ProvinciaRepository;
 import com.opencsv.bean.CsvToBean;
@@ -29,8 +29,14 @@ public class ComuniService {
 
         public Integer upload(MultipartFile file) throws IOException {
             Set<Comune> comuni = parseCsv(file);
-            comuneRepository.saveAll(comuni);
-            return comuni.size();
+            Set<Comune> nuovicomuni = comuni.stream().filter(comune ->
+                    !comuneRepository.existsByCodiceProvinciaAndProgressivoComune(comune.getCodiceProvincia(), comune.getProgressivoComune())).collect(Collectors.toSet());
+
+            if (nuovicomuni.isEmpty()) {
+                throw new BadRequestException("Tutti i comuni nel file sono già presenti nel database.");
+            }
+            comuneRepository.saveAll(nuovicomuni);
+            return nuovicomuni.size();
         }
 
         private Set<Comune> parseCsv(MultipartFile file) throws IOException {
@@ -65,16 +71,12 @@ public class ComuniService {
                                     .build();
 
                             provinciaRepository.findByNomeIgnoreCase(csv.getProvincia())
-                                    .ifPresentOrElse(
-                                            comune::setProvincia,
-                                            () -> System.out.println("Provincia non trovata per comune: " + csv.getCodiceProvincia()
-                                                    + csv.getNomeComune() + " (" + csv.getProvincia() + ")")
-                                    );
+                                    .ifPresent(comune::setProvincia);
 
                             return comune;
-                        })
-                        .filter(c -> c.getProvincia() != null) // salva solo quelli con provincia valida
-                        .collect(Collectors.toSet());
+                        }).collect(Collectors.toSet());
+
+
         }
     }
 
