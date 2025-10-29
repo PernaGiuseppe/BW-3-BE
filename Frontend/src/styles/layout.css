@@ -1,0 +1,76 @@
+/* Layout centering system: pulito, efficiente, mantenibile */
+* { box-sizing: border-box; }
+
+:root {
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --max-content-width: 72rem; /* ~1152px */
+}
+
+/* Shell che centra verticalmente e orizzontalmente */
+.centered-shell {
+  min-height: calc(100svh - var(--navbar-height)); /* adatta al fixed nav */
+  display: grid;
+  place-items: center; /* centraggio perfetto */
+  padding: calc(var(--space-6) + env(safe-area-inset-top)) var(--space-6) calc(var(--space-6) + env(safe-area-inset-bottom));
+}
+
+/* Navbar fissata in alto a larghezza completa */
+.app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030; /* sopra al contenuto (coerente con Bootstrap) */
+}
+
+/* Offset del contenuto per evitare che la navbar copra il body */
+.with-navbar-offset { padding-top: var(--navbar-height); }
+
+/* Container principale centrato e responsivo */
+.centered-container {
+  width: min(100vw - var(--space-6) * 2, var(--max-content-width));
+  margin: 0 auto; /* centrato orizzontalmente */
+}
+
+/* Utilità per gestire spazi e margini senza collassi */
+.stack { /* colonna con gap moderno */
+  display: grid;
+  gap: var(--space-4);
+}
+
+.cluster { /* riga con centraggio e wrap */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.center-content { /* mantiene centraggio degli elementi interni */
+  display: grid;
+  place-content: center;
+  min-height: 100%;
+}
+
+/* Breakpoint per larga scala */
+@media (min-width: 1200px) {
+  :root { --max-content-width: 80rem; }
+}
+
+/* Breakpoint mobile */
+@media (max-width: 576px) {
+  .centered-shell { padding: var(--space-4); }
+}
+:root {
+  /* Altezza navbar standard Bootstrap */
+  --navbar-height: 56px;
+}
+
+@media (min-width: 992px) { /* lg */
+  :root { --navbar-height: 64px; }
+}
