@@ -5,9 +5,11 @@ import buildweek5.BW_3_BE.entities.RuoloUtente;
 import buildweek5.BW_3_BE.repositories.RuoloUtenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Component
+@Order(1)
 public class RuoloInizializer implements CommandLineRunner {
     @Autowired
     private RuoloUtenteRepository ruoloUtenteRepository;
