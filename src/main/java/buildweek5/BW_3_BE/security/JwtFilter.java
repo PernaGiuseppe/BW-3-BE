@@ -16,13 +16,18 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
+    private static final List<String> EXCLUDED_PATHS = Arrays.asList(
+            "/auth/**",
+            "/import/**"
+    );
     @Autowired
     private JwtTools jwtTools;
-
     @Autowired
     private UtenteService utentiService;
 
@@ -37,9 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String accessToken = authHeader.substring(7);
-
         jwtTools.verifyToken(accessToken);
-
         String id = jwtTools.extractIdFromToken(accessToken);
         Utente utenteCorrente = this.utentiService.findById(Long.parseLong(id));
 
@@ -50,12 +53,15 @@ public class JwtFilter extends OncePerRequestFilter {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         filterChain.doFilter(request, response);
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return new AntPathMatcher().match("/auth/**", request.getServletPath());
+        String path = request.getServletPath();
+        AntPathMatcher pathMatcher = new AntPathMatcher();
+
+        return EXCLUDED_PATHS.stream()
+                .anyMatch(pattern -> pathMatcher.match(pattern, path));
     }
 }
