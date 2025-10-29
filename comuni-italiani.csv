@@ -1182,7 +1182,7 @@
 103;079;Valle Cannobina;Verbania
 007;001;Allein;Valle d'Aosta
 007;002;Antey-Saint-André;Valle d'Aosta
-007;003;Aosta;Valle d'Aosta
+007;003;Aosta;Aosta
 007;004;Arnad;Valle d'Aosta
 007;005;Arvier;Valle d'Aosta
 007;006;Avise;Valle d'Aosta
@@ -7526,98 +7526,98 @@
 089;019;Sortino;Siracusa
 089;020;Portopalo di Capo Passero;Siracusa
 089;021;Priolo Gargallo;Siracusa
-090;#RIF!;Aggius;Sassari
-090;#RIF!;Alà dei Sardi;Sassari
-090;#RIF!;Alghero;Sassari
-090;#RIF!;Anela;Sassari
-090;#RIF!;Ardara;Sassari
-090;#RIF!;Arzachena;Sassari
-090;#RIF!;Banari;Sassari
-090;#RIF!;Benetutti;Sassari
-090;#RIF!;Berchidda;Sassari
-090;#RIF!;Bessude;Sassari
-090;#RIF!;Bonnanaro;Sassari
-090;#RIF!;Bono;Sassari
-090;#RIF!;Bonorva;Sassari
-090;#RIF!;Bortigiadas;Sassari
-090;#RIF!;Borutta;Sassari
-090;#RIF!;Bottidda;Sassari
-090;#RIF!;Buddusò;Sassari
-090;#RIF!;Bultei;Sassari
-090;#RIF!;Bulzi;Sassari
-090;#RIF!;Burgos;Sassari
-090;#RIF!;Calangianus;Sassari
-090;#RIF!;Cargeghe;Sassari
-090;#RIF!;Castelsardo;Sassari
-090;#RIF!;Cheremule;Sassari
-090;#RIF!;Chiaramonti;Sassari
-090;#RIF!;Codrongianos;Sassari
-090;#RIF!;Cossoine;Sassari
-090;#RIF!;Esporlatu;Sassari
-090;#RIF!;Florinas;Sassari
-090;#RIF!;Giave;Sassari
-090;#RIF!;Illorai;Sassari
-090;#RIF!;Ittireddu;Sassari
-090;#RIF!;Ittiri;Sassari
-090;#RIF!;Laerru;Sassari
-090;#RIF!;La Maddalena;Sassari
-090;#RIF!;Luogosanto;Sassari
-090;#RIF!;Luras;Sassari
-090;#RIF!;Mara;Sassari
-090;#RIF!;Martis;Sassari
-090;#RIF!;Monteleone Rocca Doria;Sassari
-090;#RIF!;Monti;Sassari
-090;#RIF!;Mores;Sassari
-090;#RIF!;Muros;Sassari
-090;#RIF!;Nughedu San Nicolò;Sassari
-090;#RIF!;Nule;Sassari
-090;#RIF!;Nulvi;Sassari
-090;#RIF!;Olbia;Sassari
-090;#RIF!;Olmedo;Sassari
-090;#RIF!;Oschiri;Sassari
-090;#RIF!;Osilo;Sassari
-090;#RIF!;Ossi;Sassari
-090;#RIF!;Ozieri;Sassari
-090;#RIF!;Padria;Sassari
-090;#RIF!;Palau;Sassari
-090;#RIF!;Pattada;Sassari
-090;#RIF!;Perfugas;Sassari
-090;#RIF!;Ploaghe;Sassari
-090;#RIF!;Porto Torres;Sassari
-090;#RIF!;Pozzomaggiore;Sassari
-090;#RIF!;Putifigari;Sassari
-090;#RIF!;Romana;Sassari
-090;#RIF!;Aglientu;Sassari
-090;#RIF!;Santa Teresa Gallura;Sassari
-090;#RIF!;Sassari;Sassari
-090;#RIF!;Sedini;Sassari
-090;#RIF!;Semestene;Sassari
-090;#RIF!;Sennori;Sassari
-090;#RIF!;Siligo;Sassari
-090;#RIF!;Sorso;Sassari
-090;#RIF!;Tempio Pausania;Sassari
-090;#RIF!;Thiesi;Sassari
-090;#RIF!;Tissi;Sassari
-090;#RIF!;Torralba;Sassari
-090;#RIF!;Trinità d'Agultu e Vignola;Sassari
-090;#RIF!;Tula;Sassari
-090;#RIF!;Uri;Sassari
-090;#RIF!;Usini;Sassari
-090;#RIF!;Villanova Monteleone;Sassari
-090;#RIF!;Valledoria;Sassari
-090;#RIF!;Telti;Sassari
-090;#RIF!;Badesi;Sassari
-090;#RIF!;Viddalba;Sassari
-090;#RIF!;Golfo Aranci;Sassari
-090;#RIF!;Loiri Porto San Paolo;Sassari
-090;#RIF!;Sant'Antonio di Gallura;Sassari
-090;#RIF!;Tergu;Sassari
-090;#RIF!;Santa Maria Coghinas;Sassari
-090;#RIF!;Erula;Sassari
-090;#RIF!;Stintino;Sassari
-090;#RIF!;Padru;Sassari
-090;#RIF!;Budoni;Sassari
-090;#RIF!;San Teodoro;Sassari
+090;022;Aggius;Sassari
+090;023;Alà dei Sardi;Sassari
+090;024;Alghero;Sassari
+090;025;Anela;Sassari
+090;026;Ardara;Sassari
+090;027;Arzachena;Sassari
+090;028;Banari;Sassari
+090;029;Benetutti;Sassari
+090;030;Berchidda;Sassari
+090;031;Bessude;Sassari
+090;032;Bonnanaro;Sassari
+090;033;Bono;Sassari
+090;034;Bonorva;Sassari
+090;035;Bortigiadas;Sassari
+090;036;Borutta;Sassari
+090;037;Bottidda;Sassari
+090;038;Buddusò;Sassari
+090;039;Bultei;Sassari
+090;040;Bulzi;Sassari
+090;041;Burgos;Sassari
+090;042;Calangianus;Sassari
+090;043;Cargeghe;Sassari
+090;044;Castelsardo;Sassari
+090;045;Cheremule;Sassari
+090;046;Chiaramonti;Sassari
+090;047;Codrongianos;Sassari
+090;048;Cossoine;Sassari
+090;049;Esporlatu;Sassari
+090;050;Florinas;Sassari
+090;051;Giave;Sassari
+090;052;Illorai;Sassari
+090;053;Ittireddu;Sassari
+090;054;Ittiri;Sassari
+090;055;Laerru;Sassari
+090;056;La Maddalena;Sassari
+090;057;Luogosanto;Sassari
+090;058;Luras;Sassari
+090;059;Mara;Sassari
+090;060;Martis;Sassari
+090;061;Monteleone Rocca Doria;Sassari
+090;062;Monti;Sassari
+090;063;Mores;Sassari
+090;064;Muros;Sassari
+090;065;Nughedu San Nicolò;Sassari
+090;066;Nule;Sassari
+090;067;Nulvi;Sassari
+090;068;Olbia;Sassari
+090;069;Olmedo;Sassari
+090;070;Oschiri;Sassari
+090;071;Osilo;Sassari
+090;072;Ossi;Sassari
+090;073;Ozieri;Sassari
+090;074;Padria;Sassari
+090;075;Palau;Sassari
+090;076;Pattada;Sassari
+090;077;Perfugas;Sassari
+090;078;Ploaghe;Sassari
+090;079;Porto Torres;Sassari
+090;080;Pozzomaggiore;Sassari
+090;081;Putifigari;Sassari
+090;082;Romana;Sassari
+090;083;Aglientu;Sassari
+090;084;Santa Teresa Gallura;Sassari
+090;085;Sassari;Sassari
+090;086;Sedini;Sassari
+090;087;Semestene;Sassari
+090;088;Sennori;Sassari
+090;089;Siligo;Sassari
+090;090;Sorso;Sassari
+090;091;Tempio Pausania;Sassari
+090;092;Thiesi;Sassari
+090;093;Tissi;Sassari
+090;094;Torralba;Sassari
+090;095;Trinità d'Agultu e Vignola;Sassari
+090;096;Tula;Sassari
+090;097;Uri;Sassari
+090;098;Usini;Sassari
+090;099;Villanova Monteleone;Sassari
+090;100;Valledoria;Sassari
+090;101;Telti;Sassari
+090;102;Badesi;Sassari
+090;103;Viddalba;Sassari
+090;104;Golfo Aranci;Sassari
+090;105;Loiri Porto San Paolo;Sassari
+090;106;Sant'Antonio di Gallura;Sassari
+090;107;Tergu;Sassari
+090;108;Santa Maria Coghinas;Sassari
+090;109;Erula;Sassari
+090;110;Stintino;Sassari
+090;111;Padru;Sassari
+090;112;Budoni;Sassari
+090;113;San Teodoro;Sassari
 091;001;Aritzo;Nuoro
 091;002;Arzana;Nuoro
 091;003;Atzara;Nuoro
@@ -7796,110 +7796,110 @@
 095;086;Sagama;Oristano
 095;087;Suni;Oristano
 095;088;Tinnura;Oristano
-111;001;Arbus;Sud Sardegna
-111;002;Armungia;Sud Sardegna
-111;003;Ballao;Sud Sardegna
-111;004;Barrali;Sud Sardegna
-111;005;Barumini;Sud Sardegna
-111;006;Buggerru;Sud Sardegna
-111;007;Burcei;Sud Sardegna
-111;008;Calasetta;Sud Sardegna
-111;009;Carbonia;Sud Sardegna
-111;010;Carloforte;Sud Sardegna
-111;011;Castiadas;Sud Sardegna
-111;012;Collinas;Sud Sardegna
-111;013;Decimoputzu;Sud Sardegna
-111;014;Dolianova;Sud Sardegna
-111;015;Domus de Maria;Sud Sardegna
-111;016;Domusnovas;Sud Sardegna
-111;017;Donori;Sud Sardegna
-111;018;Escalaplano;Sud Sardegna
-111;019;Escolca;Sud Sardegna
-111;020;Esterzili;Sud Sardegna
-111;021;Fluminimaggiore;Sud Sardegna
-111;022;Furtei;Sud Sardegna
-111;023;Genoni;Sud Sardegna
-111;024;Genuri;Sud Sardegna
-111;025;Gergei;Sud Sardegna
-111;026;Gesico;Sud Sardegna
-111;027;Gesturi;Sud Sardegna
-111;028;Giba;Sud Sardegna
-111;029;Goni;Sud Sardegna
-111;030;Gonnesa;Sud Sardegna
-111;031;Gonnosfanadiga;Sud Sardegna
-111;032;Guamaggiore;Sud Sardegna
-111;033;Guasila;Sud Sardegna
-111;034;Guspini;Sud Sardegna
-111;035;Iglesias;Sud Sardegna
-111;036;Isili;Sud Sardegna
-111;037;Las Plassas;Sud Sardegna
-111;038;Lunamatrona;Sud Sardegna
-111;039;Mandas;Sud Sardegna
-111;040;Masainas;Sud Sardegna
-111;041;Monastir;Sud Sardegna
-111;042;Muravera;Sud Sardegna
-111;043;Musei;Sud Sardegna
-111;044;Narcao;Sud Sardegna
-111;045;Nuragus;Sud Sardegna
-111;046;Nurallao;Sud Sardegna
-111;047;Nuraminis;Sud Sardegna
-111;048;Nurri;Sud Sardegna
-111;049;Nuxis;Sud Sardegna
-111;050;Orroli;Sud Sardegna
-111;051;Ortacesus;Sud Sardegna
-111;052;Pabillonis;Sud Sardegna
-111;053;Pauli Arbarei;Sud Sardegna
-111;054;Perdaxius;Sud Sardegna
-111;055;Pimentel;Sud Sardegna
-111;056;Piscinas;Sud Sardegna
-111;057;Portoscuso;Sud Sardegna
-111;058;Sadali;Sud Sardegna
-111;059;Samassi;Sud Sardegna
-111;060;Samatzai;Sud Sardegna
-111;061;San Basilio;Sud Sardegna
-111;062;San Gavino Monreale;Sud Sardegna
-111;063;San Giovanni Suergiu;Sud Sardegna
-111;064;San Nicolò Gerrei;Sud Sardegna
-111;065;San Sperate;Sud Sardegna
-111;066;San Vito;Sud Sardegna
-111;067;Sanluri;Sud Sardegna
-111;068;Santadi;Sud Sardegna
-111;069;Sant'Andrea Frius;Sud Sardegna
-111;070;Sant'Anna Arresi;Sud Sardegna
-111;071;Sant'Antioco;Sud Sardegna
-111;072;Sardara;Sud Sardegna
-111;073;Segariu;Sud Sardegna
-111;074;Selegas;Sud Sardegna
-111;075;Senorbì;Sud Sardegna
-111;076;Serdiana;Sud Sardegna
-111;077;Serramanna;Sud Sardegna
-111;078;Serrenti;Sud Sardegna
-111;079;Serri;Sud Sardegna
-111;080;Setzu;Sud Sardegna
-111;081;Seui;Sud Sardegna
-111;082;Seulo;Sud Sardegna
-111;083;Siddi;Sud Sardegna
-111;084;Siliqua;Sud Sardegna
-111;085;Silius;Sud Sardegna
-111;086;Siurgus Donigala;Sud Sardegna
-111;087;Soleminis;Sud Sardegna
-111;088;Suelli;Sud Sardegna
-111;089;Teulada;Sud Sardegna
-111;090;Tratalias;Sud Sardegna
-111;091;Tuili;Sud Sardegna
-111;092;Turri;Sud Sardegna
-111;093;Ussana;Sud Sardegna
-111;094;Ussaramanna;Sud Sardegna
-111;095;Vallermosa;Sud Sardegna
-111;096;Villacidro;Sud Sardegna
-111;097;Villamar;Sud Sardegna
-111;098;Villamassargia;Sud Sardegna
-111;099;Villanova Tulo;Sud Sardegna
-111;100;Villanovaforru;Sud Sardegna
-111;101;Villanovafranca;Sud Sardegna
-111;102;Villaperuccio;Sud Sardegna
-111;103;Villaputzu;Sud Sardegna
-111;104;Villasalto;Sud Sardegna
-111;105;Villasimius;Sud Sardegna
-111;106;Villasor;Sud Sardegna
-111;107;Villaspeciosa;Sud Sardegna
+111;001;Arbus;Cagliari
+111;002;Armungia;Cagliari
+111;003;Ballao;Cagliari
+111;004;Barrali;Cagliari
+111;005;Barumini;Cagliari
+111;006;Buggerru;Cagliari
+111;007;Burcei;Cagliari
+111;008;Calasetta;Cagliari
+111;009;Carbonia;Cagliari
+111;010;Carloforte;Cagliari
+111;011;Castiadas;Cagliari
+111;012;Collinas;Cagliari
+111;013;Decimoputzu;Cagliari
+111;014;Dolianova;Cagliari
+111;015;Domus de Maria;Cagliari
+111;016;Domusnovas;Cagliari
+111;017;Donori;Cagliari
+111;018;Escalaplano;Cagliari
+111;019;Escolca;Cagliari
+111;020;Esterzili;Cagliari
+111;021;Fluminimaggiore;Cagliari
+111;022;Furtei;Cagliari
+111;023;Genoni;Cagliari
+111;024;Genuri;Cagliari
+111;025;Gergei;Cagliari
+111;026;Gesico;Cagliari
+111;027;Gesturi;Cagliari
+111;028;Giba;Cagliari
+111;029;Goni;Cagliari
+111;030;Gonnesa;Cagliari
+111;031;Gonnosfanadiga;Cagliari
+111;032;Guamaggiore;Cagliari
+111;033;Guasila;Cagliari
+111;034;Guspini;Cagliari
+111;035;Iglesias;Cagliari
+111;036;Isili;Cagliari
+111;037;Las Plassas;Cagliari
+111;038;Lunamatrona;Cagliari
+111;039;Mandas;Cagliari
+111;040;Masainas;Cagliari
+111;041;Monastir;Cagliari
+111;042;Muravera;Cagliari
+111;043;Musei;Cagliari
+111;044;Narcao;Cagliari
+111;045;Nuragus;Cagliari
+111;046;Nurallao;Cagliari
+111;047;Nuraminis;Cagliari
+111;048;Nurri;Cagliari
+111;049;Nuxis;Cagliari
+111;050;Orroli;Cagliari
+111;051;Ortacesus;Cagliari
+111;052;Pabillonis;Cagliari
+111;053;Pauli Arbarei;Cagliari
+111;054;Perdaxius;Cagliari
+111;055;Pimentel;Cagliari
+111;056;Piscinas;Cagliari
+111;057;Portoscuso;Cagliari
+111;058;Sadali;Cagliari
+111;059;Samassi;Cagliari
+111;060;Samatzai;Cagliari
+111;061;San Basilio;Cagliari
+111;062;San Gavino Monreale;Cagliari
+111;063;San Giovanni Suergiu;Cagliari
+111;064;San Nicolò Gerrei;Cagliari
+111;065;San Sperate;Cagliari
+111;066;San Vito;Cagliari
+111;067;Sanluri;Cagliari
+111;068;Santadi;Cagliari
+111;069;Sant'Andrea Frius;Cagliari
+111;070;Sant'Anna Arresi;Cagliari
+111;071;Sant'Antioco;Cagliari
+111;072;Sardara;Cagliari
+111;073;Segariu;Cagliari
+111;074;Selegas;Cagliari
+111;075;Senorbì;Cagliari
+111;076;Serdiana;Cagliari
+111;077;Serramanna;Cagliari
+111;078;Serrenti;Cagliari
+111;079;Serri;Cagliari
+111;080;Setzu;Cagliari
+111;081;Seui;Cagliari
+111;082;Seulo;Cagliari
+111;083;Siddi;Cagliari
+111;084;Siliqua;Cagliari
+111;085;Silius;Cagliari
+111;086;Siurgus Donigala;Cagliari
+111;087;Soleminis;Cagliari
+111;088;Suelli;Cagliari
+111;089;Teulada;Cagliari
+111;090;Tratalias;Cagliari
+111;091;Tuili;Cagliari
+111;092;Turri;Cagliari
+111;093;Ussana;Cagliari
+111;094;Ussaramanna;Cagliari
+111;095;Vallermosa;Cagliari
+111;096;Villacidro;Cagliari
+111;097;Villamar;Cagliari
+111;098;Villamassargia;Cagliari
+111;099;Villanova Tulo;Cagliari
+111;100;Villanovaforru;Cagliari
+111;101;Villanovafranca;Cagliari
+111;102;Villaperuccio;Cagliari
+111;103;Villaputzu;Cagliari
+111;104;Villasalto;Cagliari
+111;105;Villasimius;Cagliari
+111;106;Villasor;Cagliari
+111;107;Villaspeciosa;Cagliari

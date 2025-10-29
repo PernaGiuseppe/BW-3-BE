@@ -11,7 +11,6 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @Builder
-//(exclude = "provincia")
 public class Comune {
 
     @Id
