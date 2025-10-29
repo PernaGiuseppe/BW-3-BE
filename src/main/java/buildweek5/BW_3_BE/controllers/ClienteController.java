@@ -2,6 +2,7 @@ package buildweek5.BW_3_BE.controllers;
 
 import buildweek5.BW_3_BE.entities.Cliente;
 import buildweek5.BW_3_BE.entities.Provincia;
+import buildweek5.BW_3_BE.entities.Utente;
 import buildweek5.BW_3_BE.exceptions.NotValidException;
 import buildweek5.BW_3_BE.payloads.ClienteDTO;
 import buildweek5.BW_3_BE.payloads.ClienteFilterPayload;
@@ -14,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -91,5 +93,8 @@ public class ClienteController {
     public void deleteCliente(@PathVariable Long id){
         clienteService.deleteCliente(id);
     }
-
+    @PatchMapping("/{id}")
+    public Cliente udpdateImg(@RequestParam("avatar") MultipartFile file, @PathVariable Long id){
+        return clienteService.findByIdAndUpImg(id, file);
+    }
 }

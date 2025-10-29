@@ -9,12 +9,18 @@ import buildweek5.BW_3_BE.payloads.UpdateRuoloDTO;
 import buildweek5.BW_3_BE.payloads.UtenteDTO;
 import buildweek5.BW_3_BE.repositories.RuoloUtenteRepository;
 import buildweek5.BW_3_BE.repositories.UtentiRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @Slf4j
@@ -25,6 +31,10 @@ public class UtenteService {
     private PasswordEncoder bcrypt;
     @Autowired
     private RuoloUtenteRepository ruoloUtenteRepository;
+    @Autowired
+    private Cloudinary imageUp;
+    private static final long MAX_SIZE = 5 * 1024 * 1024;
+    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg");
 
     public Utente saveUtenteUser(UtenteDTO payload, Ruolo ruoloassegnato){
         utentiRepository.findByEmail(payload.email()).ifPresent(utente -> {
@@ -95,6 +105,31 @@ public class UtenteService {
         Utente updated = utentiRepository.save(found);
         log.info("Ruolo di " + found.getUsername() + " aggiornato");
         return updated;
+    }
+    public Utente findByIdAndUpImg(Long id, MultipartFile file){
+        Utente found = this.findById(id);
+        // gestisco le eccezioni su formati e grandezza o se il file è vuoto
+        if (file.isEmpty()) throw new BadRequestException("File Vuoto");
+        if (file.getSize() > MAX_SIZE) throw new BadRequestException("File troppo grande");
+        if (!ALLOWED_TYPES.contains(file.getContentType()))
+            throw new BadRequestException("Formato file non supportato");
+
+        // gestisco l'upload
+        try {
+            // upload chiede il file più una map vuota o con dettagli aggettivi
+            Map result = imageUp.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            // recupero l'url dal risultato
+            String urlImg = (String) result.get("url");
+            // setto l'url all'autore
+            found.setAvatar(urlImg);
+            Utente newImgDip = utentiRepository.save(found);
+            log.info("Immagine del dipendente " + found.getId() + " aggiornata correttamente");
+            return newImgDip;
+
+        } catch (IOException e) {
+            throw new BadRequestException("Errore nel caricamento dell'immagine");
+        }
+
     }
 
 }

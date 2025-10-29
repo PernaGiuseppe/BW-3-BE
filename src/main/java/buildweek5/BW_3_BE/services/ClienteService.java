@@ -3,6 +3,7 @@ package buildweek5.BW_3_BE.services;
 import buildweek5.BW_3_BE.entities.Cliente;
 import buildweek5.BW_3_BE.entities.Comune;
 import buildweek5.BW_3_BE.entities.Indirizzo;
+import buildweek5.BW_3_BE.entities.Utente;
 import buildweek5.BW_3_BE.exceptions.BadRequestException;
 import buildweek5.BW_3_BE.exceptions.NotFoundException;
 import buildweek5.BW_3_BE.payloads.ClienteDTO;
@@ -11,16 +12,24 @@ import buildweek5.BW_3_BE.payloads.IndirizzoDTO;
 import buildweek5.BW_3_BE.repositories.ClientiRepository;
 import buildweek5.BW_3_BE.repositories.ComuneRepository;
 import buildweek5.BW_3_BE.repositories.IndirizziRepository;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 @Service
+@Slf4j
 public class ClienteService {
 
     @Autowired
@@ -31,6 +40,10 @@ public class ClienteService {
 
     @Autowired
     private ComuneRepository comuneRepo;
+    @Autowired
+    private Cloudinary imageUp;
+    private static final long MAX_SIZE = 5 * 1024 * 1024;
+    private static final List<String> ALLOWED_TYPES = List.of("image/png", "image/jpeg");
 
 
     public Cliente createCliente(ClienteDTO dto) {
@@ -170,6 +183,31 @@ public class ClienteService {
         } else {
             return clienteRepo.findAllOrderByProvinciaNomeAsc(pageable);
         }
+    }
+    public Cliente findByIdAndUpImg(Long id, MultipartFile file){
+        Cliente found = this.findById(id);
+        // gestisco le eccezioni su formati e grandezza o se il file è vuoto
+        if (file.isEmpty()) throw new BadRequestException("File Vuoto");
+        if (file.getSize() > MAX_SIZE) throw new BadRequestException("File troppo grande");
+        if (!ALLOWED_TYPES.contains(file.getContentType()))
+            throw new BadRequestException("Formato file non supportato");
+
+        // gestisco l'upload
+        try {
+            // upload chiede il file più una map vuota o con dettagli aggettivi
+            Map result = imageUp.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            // recupero l'url dal risultato
+            String urlImg = (String) result.get("url");
+            // setto l'url all'autore
+            found.setLogoAziendale(urlImg);
+            Cliente newImgCliente = clienteRepo.save(found);
+            log.info("Immagine del dipendente " + found.getId() + " aggiornata correttamente");
+            return newImgCliente;
+
+        } catch (IOException e) {
+            throw new BadRequestException("Errore nel caricamento dell'immagine");
+        }
+
     }
 }
 
