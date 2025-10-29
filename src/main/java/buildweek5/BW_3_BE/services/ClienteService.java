@@ -6,7 +6,7 @@ import buildweek5.BW_3_BE.entities.Indirizzo;
 import buildweek5.BW_3_BE.exceptions.BadRequestException;
 import buildweek5.BW_3_BE.exceptions.NotFoundException;
 import buildweek5.BW_3_BE.payloads.ClienteDTO;
-import buildweek5.BW_3_BE.payloads.ClienteFilterDTO;
+import buildweek5.BW_3_BE.payloads.ClienteFilterPayload;
 import buildweek5.BW_3_BE.payloads.IndirizzoDTO;
 import buildweek5.BW_3_BE.repositories.ClientiRepository;
 import buildweek5.BW_3_BE.repositories.ComuneRepository;
@@ -96,7 +96,7 @@ public class ClienteService {
                 .orElseThrow(() -> new NotFoundException("Cliente con id " + id + " non trovato"));
     }
 
-    public Page<Cliente> filterClienti(ClienteFilterDTO filters, int npagine, int nsize, String sortBy) {
+    public Page<Cliente> filterClienti(ClienteFilterPayload filters, int npagine, int nsize, String sortBy) {
         if (nsize >= 30) nsize = 30;
         Pageable pageable = PageRequest.of(npagine, nsize, Sort.by(sortBy));
         return clienteRepo.findAll(pageable);
