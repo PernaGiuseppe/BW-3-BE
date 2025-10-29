@@ -2,7 +2,7 @@ package buildweek5.BW_3_BE.security;
 
 import buildweek5.BW_3_BE.entities.Utente;
 import buildweek5.BW_3_BE.exceptions.UnauthorizedException;
-import buildweek5.BW_3_BE.services.UtentiService;
+import buildweek5.BW_3_BE.services.UtenteService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,7 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private JwtTools jwtTools;
 
     @Autowired
-    private UtentiService utentiService;
+    private UtenteService utentiService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,

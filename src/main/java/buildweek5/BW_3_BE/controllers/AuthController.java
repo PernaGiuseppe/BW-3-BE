@@ -1,5 +1,7 @@
 package buildweek5.BW_3_BE.controllers;
 
+import buildweek5.BW_3_BE.entities.Ruolo;
+import buildweek5.BW_3_BE.entities.Utente;
 import buildweek5.BW_3_BE.exceptions.BadRequestException;
 import buildweek5.BW_3_BE.payloads.LoginDTO;
 import buildweek5.BW_3_BE.payloads.LoginResponseDTO;
@@ -31,14 +33,14 @@ public class AuthController {
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UtenteDTO save(@RequestBody @Validated UtenteDTO body, BindingResult validationResult) {
+    public Utente save(@RequestBody @Validated UtenteDTO body, Ruolo ruolo, BindingResult validationResult) {
         if (validationResult.hasErrors()) {
             String messages = validationResult.getAllErrors().stream()
                     .map(error -> error.getDefaultMessage())
                     .collect(Collectors.joining(". "));
             throw new BadRequestException("Ci sono stati errori nel payload: " + messages);
         }
-        return this.utentiService.save(body);
+        return this.utentiService.saveUtenteUser(body, ruolo);
     }
 }
 

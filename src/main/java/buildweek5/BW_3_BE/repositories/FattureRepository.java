@@ -4,12 +4,12 @@ import buildweek5.BW_3_BE.entities.Cliente;
 import buildweek5.BW_3_BE.entities.Fattura;
 import buildweek5.BW_3_BE.entities.StatoFattura;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Pageable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +22,7 @@ public interface FattureRepository extends JpaRepository<Fattura, Long> {
 
     List<Fattura> findByStatoFattura(StatoFattura stato);
 
+
     Page<Fattura> findByStatoFattura(StatoFattura stato, Pageable pageable);
 
     List<Fattura> findByDataBetween(LocalDate start, LocalDate end);
@@ -33,4 +34,5 @@ public interface FattureRepository extends JpaRepository<Fattura, Long> {
 
     @Query("SELECT f FROM Fattura f WHERE YEAR(f.data) = :anno")
     Page<Fattura> findByAnno(@Param("anno") int anno, Pageable pageable);
+    //Page<Fattura> findByAnno(int anno, Pageable pageable);
 }
