@@ -71,7 +71,8 @@ public class ComuniService {
                                     .build();
 
                             provinciaRepository.findByNomeIgnoreCase(csv.getProvincia())
-                                    .ifPresent(comune::setProvincia);
+                                    .ifPresentOrElse(comune::setProvincia,
+                                            ()-> System.out.println("provincia non trovata per comune " + csv.getNomeComune() + " " + csv.getProvincia() ));
 
                             return comune;
                         }).collect(Collectors.toSet());
