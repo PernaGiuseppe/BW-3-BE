@@ -22,9 +22,12 @@ import java.util.List;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
+    private static final List<String> EXCLUDED_PATHS = Arrays.asList(
+            "/auth/**",
+            "/import/**"
+    );
     @Autowired
     private JwtTools jwtTools;
-
     @Autowired
     private UtenteService utentiService;
 
@@ -39,9 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         String accessToken = authHeader.substring(7);
-
         jwtTools.verifyToken(accessToken);
-
         String id = jwtTools.extractIdFromToken(accessToken);
         Utente utenteCorrente = this.utentiService.findById(Long.parseLong(id));
 
@@ -52,15 +53,15 @@ public class JwtFilter extends OncePerRequestFilter {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         filterChain.doFilter(request, response);
     }
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getServletPath();
-        AntPathMatcher matcher = new AntPathMatcher();
-        List<String> excludedPaths = Arrays.asList("/auth/**", "/import/**");
-        return excludedPaths.stream().anyMatch(p-> matcher.match(p,path));
+        AntPathMatcher pathMatcher = new AntPathMatcher();
+
+        return EXCLUDED_PATHS.stream()
+                .anyMatch(pattern -> pathMatcher.match(pattern, path));
     }
 }
