@@ -25,7 +25,7 @@ public class UtenteService {
     @Autowired
     private RuoloUtenteRepository ruoloUtenteRepository;
 
-    public Utente saveUtenteUser(UtenteDTO payload, Ruolo ruoloassegnato) {
+    public Utente saveUtenteUser(UtenteDTO payload, Ruolo ruoloassegnato){
         utentiRepository.findByEmail(payload.email()).ifPresent(utente -> {
             throw new BadRequestException("Email " + payload.email() + " già in uso");
         });
@@ -48,11 +48,9 @@ public class UtenteService {
         log.info("Utente " + savedUtente.getUsername() + " salvato correttamente");
         return savedUtente;
     }
-
-    public Utente findById(Long id) {
-        return utentiRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
+    public Utente findById(Long id){
+        return utentiRepository.findById(id).orElseThrow(()-> new NotFoundException(id));
     }
-
     public Utente findByIdAndUpdate(Long id, UtenteDTO payload, Ruolo ruoloassegnato) {
         Utente found = this.findById(id);
         if (!found.getEmail().equals(payload.email())) {
@@ -76,13 +74,12 @@ public class UtenteService {
         return updatedUtente;
     }
 
-    public void deleteUtente(Long id) {
+    public void deleteUtente(Long id){
         Utente found = this.findById(id);
         utentiRepository.delete(found);
     }
-
-    public Utente findByEmail(String email) {
-        return utentiRepository.findByEmail(email).orElseThrow(() -> new NotFoundException("L'utente con email non è stato trovato"));
+    public Utente findByEmail(String email){
+        return utentiRepository.findByEmail(email).orElseThrow(()->new NotFoundException("L'utente con email non è stato trovato"));
     }
 
 }
