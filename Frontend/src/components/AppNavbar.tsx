@@ -15,6 +15,7 @@ export default function AppNavbar() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={NavLink} to="/customers">Clienti</Nav.Link>
+            <Nav.Link as={NavLink} to="/invoice">Fatture</Nav.Link>
           </Nav>
           <Nav>
             {user ? (

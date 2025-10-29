@@ -18,7 +18,7 @@ export interface InvoiceStatus {
 
 export interface Invoice {
   id: number;
-  data: string; // ISO date
+  dataEmissione: string; // ISO date
   importo: number;
   numero: string;
   stato: InvoiceStatus;

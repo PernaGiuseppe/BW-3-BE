@@ -5,6 +5,8 @@ import Register from '../pages/Register';
 import CustomersList from '../pages/CustomersList';
 import CustomerDetail from '../pages/CustomerDetail';
 import ProtectedRoute from '../components/ProtectedRoute';
+import CustomersInvoice from '../pages/CustomersInvoice';
+import InvoiceDetail from '../pages/InvoiceDetail';
 
 export default function AppRouter() {
   return (
@@ -31,6 +33,22 @@ export default function AppRouter() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/invoice"
+            element={
+              <ProtectedRoute>
+                <CustomersInvoice />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+  path="/invoice/:id"
+  element={
+    <ProtectedRoute>
+      <InvoiceDetail />
+    </ProtectedRoute>
+  }
+/>
         </Routes>
       </div>
     </BrowserRouter>
