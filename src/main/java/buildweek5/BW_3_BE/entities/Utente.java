@@ -46,14 +46,18 @@ public class Utente implements UserDetails {
     private String avatar;
 
 
-    @OneToMany
-    @Column(nullable = false)
+    @ManyToMany
+    @JoinTable(
+            name = "utenti_ruoli",
+            joinColumns = @JoinColumn(name = "utente_id"),
+            inverseJoinColumns = @JoinColumn(name = "ruolo_id")
+    )
     private List<RuoloUtente> ruoli = new ArrayList<>();
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return ruoli.stream().map(r -> new SimpleGrantedAuthority(r.getRuoloUtente()))
+        return ruoli.stream().map(r -> new SimpleGrantedAuthority(r.getRuoloUtente().toString()))
                 .toList();
     }
 

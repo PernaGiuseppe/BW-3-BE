@@ -16,6 +16,7 @@ public class RuoloUtente {
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private String ruoloUtente;
+    private Ruolo ruoloUtente;
 }
