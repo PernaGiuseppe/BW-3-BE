@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -54,7 +55,6 @@ public class ClienteController {
                                        @RequestParam(required = false) LocalDate dataUltimoContattoInizio,
                                        @RequestParam(required = false) LocalDate dataUltimoContattoFine,
                                        @RequestParam(required = false) String nomeContiene,
-                                       @RequestParam(required = false) Provincia provinciaSedeLegale,
                                        @RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
                                        @RequestParam(defaultValue = "ragioneSociale") String sortBy){
@@ -67,7 +67,29 @@ public class ClienteController {
         filters.setDataUltimoContattoInizio(dataUltimoContattoInizio);
         filters.setDataUltimoContattoFine(dataUltimoContattoFine);
         filters.setContieneNome(nomeContiene);
-        filters.setProvincia(provinciaSedeLegale);
         return clienteService.filterClienti(filters, page, size, sortBy);
     }
+    @GetMapping("/ordinati-per-provincia")
+    public Page<Cliente> ordinaPerProvincia(@RequestParam(defaultValue = "0") int page,
+                                            @RequestParam(defaultValue = "10") int size,
+                                            @RequestParam(defaultValue = "asc") String direction) {
+        return clienteService.getClientiOrdinatiPerProvincia(page, size, direction);
+    }
+    @PutMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Cliente updateCliente(@PathVariable Long id, @RequestBody @Validated ClienteDTO payload, BindingResult validationResults){
+        if(validationResults.hasErrors()){
+            List<String> errorMessages = validationResults.getFieldErrors().stream().
+                    map(fieldError -> fieldError.getField() + " :" + fieldError.getDefaultMessage()).toList();
+            throw new NotValidException(errorMessages);
+        }
+        return clienteService.updateCliente(id, payload);
+    }
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCliente(@PathVariable Long id){
+        clienteService.deleteCliente(id);
+    }
+    
 }

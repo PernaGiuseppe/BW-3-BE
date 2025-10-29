@@ -99,7 +99,18 @@ public class ClienteService {
     public Page<Cliente> filterClienti(ClienteFilterPayload filters, int npagine, int nsize, String sortBy) {
         if (nsize >= 30) nsize = 30;
         Pageable pageable = PageRequest.of(npagine, nsize, Sort.by(sortBy));
-        return clienteRepo.findAll(pageable);
+
+        if (filters.getContieneNome() != null) {
+            return clienteRepo.findByRagioneSocialeContainingIgnoreCase(filters.getContieneNome(), pageable);
+        } else if (filters.getFatturatoMin() != null && filters.getFatturatoMax() != null) {
+            return clienteRepo.findByFatturatoAnnualeBetween(filters.getFatturatoMin(), filters.getFatturatoMax(), pageable);
+        } else if (filters.getDataInserimentoInizio() != null && filters.getDataInserimentoFine() != null) {
+            return clienteRepo.findByDataInserimentoBetween(filters.getDataInserimentoInizio(), filters.getDataInserimentoFine(), pageable);
+        } else if (filters.getDataUltimoContattoInizio() != null && filters.getDataUltimoContattoFine() != null) {
+            return clienteRepo.findByDataUltimoContattoBetween(filters.getDataUltimoContattoInizio(), filters.getDataUltimoContattoFine(), pageable);
+        } else {
+            return clienteRepo.findAll(pageable);
+        }
     }
 
 
@@ -151,6 +162,14 @@ public class ClienteService {
     public void deleteCliente(Long id) {
         Cliente cliente = findById(id);
         clienteRepo.delete(cliente);
+    }
+    public Page<Cliente> getClientiOrdinatiPerProvincia(int page, int size, String direction) {
+        Pageable pageable = PageRequest.of(page, size);
+        if (direction.equalsIgnoreCase("desc")) {
+            return clienteRepo.findAllOrderByProvinciaNomeDesc(pageable);
+        } else {
+            return clienteRepo.findAllOrderByProvinciaNomeAsc(pageable);
+        }
     }
 }
 
