@@ -1,5 +1,6 @@
 package buildweek5.BW_3_BE.exceptions;
 
+import buildweek5.BW_3_BE.payloads.ErrorsDTO;
 import buildweek5.BW_3_BE.payloads.ErrorsWithListDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,10 +39,13 @@ public class ExceptionsHandler {
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<Map<String, Object>> handleUnauthorizedException(UnauthorizedException e) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", e.getMessage());
-        response.put("timestamp", LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorsDTO handleUnauthorized(UnauthorizedException ex){
+        return new ErrorsDTO(ex.getMessage(), LocalDateTime.now());
+    }
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorsDTO handleIllegalArgument(IllegalArgumentException ex){
+        return new ErrorsDTO("L'id non può essere nullo", LocalDateTime.now());
     }
 }

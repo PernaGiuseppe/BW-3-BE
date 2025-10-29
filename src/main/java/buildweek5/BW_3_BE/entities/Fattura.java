@@ -29,7 +29,7 @@ public class Fattura {
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal importo;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "stato_fattura_id", nullable = false)
     private StatoFattura statoFattura;
 

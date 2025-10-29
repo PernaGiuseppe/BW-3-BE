@@ -3,9 +3,10 @@ package buildweek5.BW_3_BE.services;
 import buildweek5.BW_3_BE.entities.Cliente;
 import buildweek5.BW_3_BE.entities.Fattura;
 import buildweek5.BW_3_BE.entities.StatoFattura;
+import buildweek5.BW_3_BE.exceptions.BadRequestException;
 import buildweek5.BW_3_BE.exceptions.NotFoundException;
 import buildweek5.BW_3_BE.payloads.FatturaDT0;
-import buildweek5.BW_3_BE.payloads.FatturaFilterDTO;
+import buildweek5.BW_3_BE.payloads.FatturaFilterPayload;
 import buildweek5.BW_3_BE.repositories.ClientiRepository;
 import buildweek5.BW_3_BE.repositories.FattureRepository;
 import buildweek5.BW_3_BE.repositories.StatoFatturaRepository;
@@ -35,6 +36,9 @@ public class FattureService {
 
         StatoFattura stato = statoRepo.findById(dto.statoFatturaId())
                 .orElseThrow(() -> new NotFoundException("Stato fattura non trovato"));
+        if (fatturaRepo.findByNumero(dto.numero()).isPresent()) {
+            throw new BadRequestException("Numero fattura già esistente");
+        }
 
         Fattura fattura = new Fattura();
         fattura.setNumero(dto.numero());
@@ -57,9 +61,21 @@ public class FattureService {
                 .orElseThrow(() -> new NotFoundException("Fattura con id " + id + " non trovata"));
     }
 
-    public Page<Fattura> filterFatture(FatturaFilterDTO filters, int npagine, int nsize, String sortBy) {
+    public Page<Fattura> filterFatture(FatturaFilterPayload filters, int npagine, int nsize, String sortBy) {
         if (nsize >= 10) nsize = 10;
         Pageable pageable = PageRequest.of(npagine, nsize, Sort.by(sortBy));
+        if(filters.getClienteId() != null){
+            return fatturaRepo.findByClienteId(filters.getClienteId(), pageable);
+        } else if (filters.getStatoFatturaId() != null) {
+            return fatturaRepo.findByStatoFatturaId(filters.getStatoFatturaId(), pageable);
+        } else if (filters.getAnno() != null) {
+            return fatturaRepo.findByAnno(filters.getAnno(), pageable);
+        } else if (filters.getImportoMin() != null && filters.getImportoMax() != null) {
+            return fatturaRepo.findByImportoBetween(filters.getImportoMin(),filters.getImportoMax(),pageable);
+        } else if (filters.getDataInizio() != null && filters.getDataFine() != null) {
+            return fatturaRepo.findByDataBetween(filters.getDataInizio(), filters.getDataFine(), pageable);
+        }
+
         return fatturaRepo.findAll(pageable);
     }
 
@@ -72,6 +88,10 @@ public class FattureService {
 
         StatoFattura stato = statoRepo.findById(dto.statoFatturaId())
                 .orElseThrow(() -> new NotFoundException("Stato fattura non trovato"));
+        if (fatturaRepo.findByNumero(dto.numero()).isPresent()) {
+            throw new BadRequestException("Numero fattura già esistente");
+        }
+
 
         fattura.setNumero(dto.numero());
         fattura.setData(dto.data());

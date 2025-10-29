@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Order(2)
+@Order(3)
 public class AdminInizializer implements CommandLineRunner {
     @Autowired
     private UtentiRepository utentiRepository;

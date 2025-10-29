@@ -13,26 +13,26 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FattureRepository extends JpaRepository<Fattura, Long> {
     List<Fattura> findByCliente(Cliente cliente);
+    Optional<Fattura> findByNumero(String numero);
 
-    Page<Fattura> findByCliente(Cliente cliente, Pageable pageable);
+    Page<Fattura> findByClienteId(Long id, Pageable pageable);
 
     List<Fattura> findByStatoFattura(StatoFattura stato);
 
+    Page<Fattura> findByStatoFatturaId(Long id, Pageable pageable);
 
-    Page<Fattura> findByStatoFattura(StatoFattura stato, Pageable pageable);
+    Page<Fattura> findByDataBetween(LocalDate start, LocalDate end, Pageable pageable);
 
-    List<Fattura> findByDataBetween(LocalDate start, LocalDate end);
-
-    List<Fattura> findByImportoBetween(BigDecimal min, BigDecimal max);
+    Page<Fattura> findByImportoBetween(BigDecimal min, BigDecimal max, Pageable pageable);
 
     @Query("SELECT f FROM Fattura f WHERE YEAR(f.data) = :anno")
     List<Fattura> findByAnno(@Param("anno") int anno);
 
     @Query("SELECT f FROM Fattura f WHERE YEAR(f.data) = :anno")
     Page<Fattura> findByAnno(@Param("anno") int anno, Pageable pageable);
-    //Page<Fattura> findByAnno(int anno, Pageable pageable);
 }
