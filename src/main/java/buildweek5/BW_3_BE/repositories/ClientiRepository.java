@@ -8,11 +8,18 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
 @Repository
 public interface ClientiRepository extends JpaRepository<Cliente, Long> {
     Optional<Cliente> findByEmail(String email);
+
     Optional<Cliente> findByPartitaIva(String partitaIva);
+
+    Optional<Cliente> findByPec(String pec);
+
     List<Cliente> findByFatturatoAnnualeBetween(BigDecimal min, BigDecimal max);
+
     List<Cliente> findByDataInserimentoBetween(LocalDate start, LocalDate end);
+
     List<Cliente> findByDataUltimoContattoBetween(LocalDate start, LocalDate end);
 }
