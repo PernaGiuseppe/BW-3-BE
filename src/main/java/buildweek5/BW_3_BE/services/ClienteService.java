@@ -7,6 +7,7 @@ import buildweek5.BW_3_BE.exceptions.BadRequestException;
 import buildweek5.BW_3_BE.exceptions.NotFoundException;
 import buildweek5.BW_3_BE.payloads.ClienteDTO;
 import buildweek5.BW_3_BE.payloads.ClienteFilterDTO;
+import buildweek5.BW_3_BE.payloads.IndirizzoDTO;
 import buildweek5.BW_3_BE.repositories.ClientiRepository;
 import buildweek5.BW_3_BE.repositories.ComuneRepository;
 import buildweek5.BW_3_BE.repositories.IndirizziRepository;
@@ -70,7 +71,7 @@ public class ClienteService {
         return clienteRepo.save(cliente);
     }
 
-    private Indirizzo creaIndirizzo(buildweek5.BW_3_BE.payloads.IndirizzoDTO dto) {
+    private Indirizzo creaIndirizzo(IndirizzoDTO dto) {
         Comune comune = comuneRepo.findById(dto.comuneId())
                 .orElseThrow(() -> new NotFoundException("Comune non trovato"));
 
