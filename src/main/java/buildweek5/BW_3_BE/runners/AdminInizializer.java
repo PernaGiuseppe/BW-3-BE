@@ -43,7 +43,7 @@ public class AdminInizializer implements CommandLineRunner {
             admin.setCognome(adminCognome);
             admin.setUsername(adminUsername);
             admin.setEmail(adminEmail);
-            admin.setPassword(adminPassword);
+            admin.setPassword(bcrypt.encode(adminPassword));
             admin.setAvatar("https://ui-avatars.com/api/?name=" + admin.getNome() + "+" + admin.getCognome());
             RuoloUtente ruoloAdmin = ruoloUtenteRepository.findByRuoloUtente(Ruolo.ADMIN)
                     .orElseThrow(() -> new RuntimeException("Ruolo ADMIN non trovato"));
