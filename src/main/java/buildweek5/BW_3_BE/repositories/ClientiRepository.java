@@ -17,6 +17,8 @@ public interface ClientiRepository extends JpaRepository<Cliente, Long> {
 
     Optional<Cliente> findByPec(String pec);
 
+    List<Cliente> findByRagioneSocialeContainingIgnoreCase(String ragioneSociale);
+
     List<Cliente> findByFatturatoAnnualeBetween(BigDecimal min, BigDecimal max);
 
     List<Cliente> findByDataInserimentoBetween(LocalDate start, LocalDate end);
