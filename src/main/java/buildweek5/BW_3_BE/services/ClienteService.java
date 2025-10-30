@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -98,32 +99,16 @@ public class ClienteService {
         return indirizzoRepo.save(indirizzo);
     }
 
-    public Page<Cliente> findAllClienti(int npagine, int nsize, String sortBy) {
+    public Page<Cliente> findAllClientiFiltered(ClienteFilterPayload filters, int npagine, int nsize, String sortBy) {
         if (nsize >= 30) nsize = 30;
         Pageable pageable = PageRequest.of(npagine, nsize, Sort.by(sortBy));
-        return clienteRepo.findAll(pageable);
+        Specification<Cliente> spec = ClienteSpecification.byFilters(filters);
+        return clienteRepo.findAll(spec,pageable);
     }
 
     public Cliente findById(Long id) {
         return clienteRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Cliente con id " + id + " non trovato"));
-    }
-
-    public Page<Cliente> filterClienti(ClienteFilterPayload filters, int npagine, int nsize, String sortBy) {
-        if (nsize >= 30) nsize = 30;
-        Pageable pageable = PageRequest.of(npagine, nsize, Sort.by(sortBy));
-
-        if (filters.getContieneNome() != null) {
-            return clienteRepo.findByRagioneSocialeContainingIgnoreCase(filters.getContieneNome(), pageable);
-        } else if (filters.getFatturatoMin() != null && filters.getFatturatoMax() != null) {
-            return clienteRepo.findByFatturatoAnnualeBetween(filters.getFatturatoMin(), filters.getFatturatoMax(), pageable);
-        } else if (filters.getDataInserimentoInizio() != null && filters.getDataInserimentoFine() != null) {
-            return clienteRepo.findByDataInserimentoBetween(filters.getDataInserimentoInizio(), filters.getDataInserimentoFine(), pageable);
-        } else if (filters.getDataUltimoContattoInizio() != null && filters.getDataUltimoContattoFine() != null) {
-            return clienteRepo.findByDataUltimoContattoBetween(filters.getDataUltimoContattoInizio(), filters.getDataUltimoContattoFine(), pageable);
-        } else {
-            return clienteRepo.findAll(pageable);
-        }
     }
 
 

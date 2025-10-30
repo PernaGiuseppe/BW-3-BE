@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,33 +51,16 @@ public class FattureService {
         return fatturaRepo.save(fattura);
     }
 
-    public Page<Fattura> findAll(int npagine, int nsize, String sortBy) {
+    public Page<Fattura> findAllFiltered(FatturaFilterPayload filters,int npagine, int nsize, String sortBy) {
         if (nsize >= 10) nsize = 10;
         Pageable pageable = PageRequest.of(npagine, nsize, Sort.by(sortBy));
-        return fatturaRepo.findAll(pageable);
+        Specification<Fattura> spec = FatturaSpecification.byFilters(filters);
+        return fatturaRepo.findAll(spec,pageable);
     }
 
     public Fattura findById(Long id) {
         return fatturaRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Fattura con id " + id + " non trovata"));
-    }
-
-    public Page<Fattura> filterFatture(FatturaFilterPayload filters, int npagine, int nsize, String sortBy) {
-        if (nsize >= 10) nsize = 10;
-        Pageable pageable = PageRequest.of(npagine, nsize, Sort.by(sortBy));
-        if(filters.getClienteId() != null){
-            return fatturaRepo.findByClienteId(filters.getClienteId(), pageable);
-        } else if (filters.getStatoFatturaId() != null) {
-            return fatturaRepo.findByStatoFatturaId(filters.getStatoFatturaId(), pageable);
-        } else if (filters.getAnno() != null) {
-            return fatturaRepo.findByAnno(filters.getAnno(), pageable);
-        } else if (filters.getImportoMin() != null && filters.getImportoMax() != null) {
-            return fatturaRepo.findByImportoBetween(filters.getImportoMin(),filters.getImportoMax(),pageable);
-        } else if (filters.getDataInizio() != null && filters.getDataFine() != null) {
-            return fatturaRepo.findByDataBetween(filters.getDataInizio(), filters.getDataFine(), pageable);
-        }
-
-        return fatturaRepo.findAll(pageable);
     }
 
 

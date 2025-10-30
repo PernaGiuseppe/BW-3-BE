@@ -1,10 +1,12 @@
 package buildweek5.BW_3_BE.repositories;
 
 import buildweek5.BW_3_BE.entities.Cliente;
+import buildweek5.BW_3_BE.entities.Fattura;
 import buildweek5.BW_3_BE.entities.Provincia;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface ClientiRepository extends JpaRepository<Cliente, Long> {
+public interface ClientiRepository extends JpaRepository<Cliente, Long>, JpaSpecificationExecutor<Cliente> {
     Optional<Cliente> findByEmail(String email);
 
     Optional<Cliente> findByPartitaIva(String partitaIva);

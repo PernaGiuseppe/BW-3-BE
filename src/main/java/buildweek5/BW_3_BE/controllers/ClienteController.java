@@ -39,18 +39,7 @@ public class ClienteController {
         return clienteService.createCliente(body);
     }
     @GetMapping
-    public Page<Cliente> getAllClienti(@RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "10") int size,
-                                       @RequestParam(defaultValue = "ragioneSociale") String sortBy){
-        return clienteService.findAllClienti(page, size, sortBy);
-    }
-    @GetMapping("{id}")
-    public Cliente getCliente(@PathVariable Long id){
-        return clienteService.findById(id);
-    }
-
-    @GetMapping("/filter")
-    public Page<Cliente> filterClienti(@RequestParam(required = false) BigDecimal fatturatoMin,
+    public Page<Cliente> getAllClienti(@RequestParam(required = false) BigDecimal fatturatoMin,
                                        @RequestParam(required = false) BigDecimal fatturatoMax,
                                        @RequestParam(required = false) LocalDate dataInserimentoInizio,
                                        @RequestParam(required = false) LocalDate dataInserimentoFine,
@@ -60,7 +49,6 @@ public class ClienteController {
                                        @RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
                                        @RequestParam(defaultValue = "ragioneSociale") String sortBy){
-
         ClienteFilterPayload filters = new ClienteFilterPayload();
         filters.setFatturatoMin(fatturatoMin);
         filters.setFatturatoMax(fatturatoMax);
@@ -69,8 +57,13 @@ public class ClienteController {
         filters.setDataUltimoContattoInizio(dataUltimoContattoInizio);
         filters.setDataUltimoContattoFine(dataUltimoContattoFine);
         filters.setContieneNome(nomeContiene);
-        return clienteService.filterClienti(filters, page, size, sortBy);
+        return clienteService.findAllClientiFiltered(filters, page, size, sortBy);
     }
+    @GetMapping("{id}")
+    public Cliente getCliente(@PathVariable Long id){
+        return clienteService.findById(id);
+    }
+    
     @GetMapping("/ordinati-per-provincia")
     public Page<Cliente> ordinaPerProvincia(@RequestParam(defaultValue = "0") int page,
                                             @RequestParam(defaultValue = "10") int size,

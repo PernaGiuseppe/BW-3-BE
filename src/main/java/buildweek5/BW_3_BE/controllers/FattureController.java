@@ -37,17 +37,7 @@ public class FattureController {
         return fattureService.createFattura(body);
     }
     @GetMapping
-    public Page<Fattura> getAllFatture(@RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "10") int size,
-                                       @RequestParam(defaultValue = "numero") String sortBy){
-        return fattureService.findAll(page, size, sortBy);
-    }
-    @GetMapping("{id}")
-    public Fattura findById(@PathVariable Long id){
-        return fattureService.findById(id);
-    }
-    @GetMapping("/filter")
-    public Page<Fattura> filterClienti(@RequestParam(required = false) Long clienteId,
+    public Page<Fattura> getAllFatture(@RequestParam(required = false) Long clienteId,
                                        @RequestParam(required = false) Long statoFatturaId,
                                        @RequestParam(required = false) LocalDate dataInizio,
                                        @RequestParam(required = false) LocalDate dataFine,
@@ -56,8 +46,12 @@ public class FattureController {
                                        @RequestParam(required = false) BigDecimal importoMax,
                                        @RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
-                                       @RequestParam(defaultValue = "data") String sortBy){
-
+                                       @RequestParam(defaultValue = "numero") String sortBy){
+        System.out.println("ENTRATO NEL METODO getAllFatture");
+        System.out.println("=== DEBUG FILTRI ===");
+        System.out.println("clienteId ricevuto: " + clienteId);
+        System.out.println("statoFatturaId ricevuto: " + statoFatturaId);
+        System.out.println("importoMin ricevuto: " + importoMin);
         FatturaFilterPayload filters = new FatturaFilterPayload();
         filters.setClienteId(clienteId);
         filters.setStatoFatturaId(statoFatturaId);
@@ -66,8 +60,13 @@ public class FattureController {
         filters.setAnno(anno);
         filters.setImportoMin(importoMin);
         filters.setImportoMax(importoMax);
-        return fattureService.filterFatture(filters, page, size, sortBy);
+        return fattureService.findAllFiltered(filters, page, size, sortBy);
     }
+    @GetMapping("{id}")
+    public Fattura findById(@PathVariable Long id){
+        return fattureService.findById(id);
+    }
+
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Fattura updateFattura(@PathVariable Long id, @RequestBody @Validated FatturaDT0 body, BindingResult validationResults){
