@@ -30,9 +30,7 @@ export function LoginPage() {
     <Container className="d-flex justify-content-center align-items-center min-vh-100">
       <Card style={{ width: "100%", maxWidth: "400px" }} className="shadow">
         <Card.Body className="p-5">
-          <Card.Title className="text-center mb-4 fs-3">
-            Admin Dashboard
-          </Card.Title>
+          <Card.Title className="text-center mb-4 fs-3">Login</Card.Title>
 
           {error && <Alert variant="danger">{error}</Alert>}
 

@@ -47,11 +47,6 @@ public class FattureController {
                                        @RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
                                        @RequestParam(defaultValue = "numero") String sortBy){
-        System.out.println("ENTRATO NEL METODO getAllFatture");
-        System.out.println("=== DEBUG FILTRI ===");
-        System.out.println("clienteId ricevuto: " + clienteId);
-        System.out.println("statoFatturaId ricevuto: " + statoFatturaId);
-        System.out.println("importoMin ricevuto: " + importoMin);
         FatturaFilterPayload filters = new FatturaFilterPayload();
         filters.setClienteId(clienteId);
         filters.setStatoFatturaId(statoFatturaId);

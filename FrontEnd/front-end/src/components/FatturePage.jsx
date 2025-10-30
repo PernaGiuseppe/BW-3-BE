@@ -21,10 +21,10 @@ export function FatturePage() {
   const [totalPages, setTotalPages] = useState(0);
   const [sortBy, setSortBy] = useState("numero");
 
-  // Filtri
+  // Filtri secondo la consegna
   const [filters, setFilters] = useState({
     clienteId: "",
-    statoFatturaId: "",
+    statoId: "",
     dataInizio: "",
     dataFine: "",
     anno: "",
@@ -42,6 +42,7 @@ export function FatturePage() {
       });
 
       const result = await getFatture(cleanFilters, page, size, sortBy);
+      console.log(result);
       setFatture(result.content || []);
       setTotalPages(result.totalPages || 0);
     } catch (err) {
@@ -73,7 +74,7 @@ export function FatturePage() {
   const handleResetFilters = () => {
     setFilters({
       clienteId: "",
-      statoFatturaId: "",
+      statoId: "",
       dataInizio: "",
       dataFine: "",
       anno: "",
@@ -84,20 +85,59 @@ export function FatturePage() {
     setSortBy("numero");
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    try {
+      return new Date(dateString).toLocaleDateString("it-IT");
+    } catch {
+      return dateString;
+    }
+  };
+
+  const formatCurrency = (value) => {
+    if (!value) return "€ 0,00";
+    return new Intl.NumberFormat("it-IT", {
+      style: "currency",
+      currency: "EUR",
+    }).format(value);
+  };
+
+  const getPaginationItems = () => {
+    const items = [];
+    const maxPagesToShow = 5;
+    let startPage = Math.max(0, page - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow);
+
+    if (endPage - startPage < maxPagesToShow) {
+      startPage = Math.max(0, endPage - maxPagesToShow);
+    }
+
+    for (let i = startPage; i < endPage; i++) {
+      items.push(i);
+    }
+    return items;
+  };
+
   return (
     <Container fluid className="py-4">
-      <h1 className="mb-4">Gestione Fatture</h1>
+      <div className="mb-4">
+        <h1 className="mb-1">Gestione Fatture</h1>
+      </div>
 
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && (
+        <Alert variant="danger" onClose={() => setError("")} dismissible>
+          {error}
+        </Alert>
+      )}
 
       {/* Sezione Filtri */}
-      <div className="bg-light p-4 rounded mb-4">
-        <h5 className="mb-3">Filtri</h5>
+      <div className="bg-light p-4 rounded mb-4 shadow-sm">
+        <h5 className="mb-3 fw-bold">Filtri di Ricerca</h5>
         <Form onSubmit={handleSearch}>
           <Row className="mb-3">
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Cliente ID</Form.Label>
+                <Form.Label className="fw-semibold">Cliente ID</Form.Label>
                 <Form.Control
                   type="number"
                   name="clienteId"
@@ -109,11 +149,13 @@ export function FatturePage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Stato Fattura ID</Form.Label>
+                <Form.Label className="fw-semibold">
+                  Stato Fattura ID
+                </Form.Label>
                 <Form.Control
                   type="number"
-                  name="statoFatturaId"
-                  value={filters.statoFatturaId}
+                  name="statoId"
+                  value={filters.statoId}
                   onChange={handleFilterChange}
                   placeholder="ID Stato"
                 />
@@ -121,7 +163,7 @@ export function FatturePage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Anno</Form.Label>
+                <Form.Label className="fw-semibold">Anno</Form.Label>
                 <Form.Control
                   type="number"
                   name="anno"
@@ -135,7 +177,7 @@ export function FatturePage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Ordina per</Form.Label>
+                <Form.Label className="fw-semibold">Ordina per</Form.Label>
                 <Form.Select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
@@ -151,7 +193,7 @@ export function FatturePage() {
           <Row className="mb-3">
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Importo Min</Form.Label>
+                <Form.Label className="fw-semibold">Importo Min (€)</Form.Label>
                 <Form.Control
                   type="number"
                   name="importoMin"
@@ -164,7 +206,7 @@ export function FatturePage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Importo Max</Form.Label>
+                <Form.Label className="fw-semibold">Importo Max (€)</Form.Label>
                 <Form.Control
                   type="number"
                   name="importoMax"
@@ -177,7 +219,7 @@ export function FatturePage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Data Da</Form.Label>
+                <Form.Label className="fw-semibold">Data Da</Form.Label>
                 <Form.Control
                   type="date"
                   name="dataInizio"
@@ -188,7 +230,7 @@ export function FatturePage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Data A</Form.Label>
+                <Form.Label className="fw-semibold">Data A</Form.Label>
                 <Form.Control
                   type="date"
                   name="dataFine"
@@ -212,7 +254,7 @@ export function FatturePage() {
 
       {/* Tabella Fatture */}
       {loading ? (
-        <div className="text-center">
+        <div className="text-center py-5">
           <Spinner animation="border" />
         </div>
       ) : (
@@ -223,11 +265,11 @@ export function FatturePage() {
                 <tr>
                   <th>ID</th>
                   <th>Numero</th>
-                  <th>Cliente ID</th>
+                  <th>Cliente</th>
+                  <th>ID Cliente</th>
                   <th>Data</th>
                   <th>Importo</th>
                   <th>Stato</th>
-                  <th>Descrizione</th>
                 </tr>
               </thead>
               <tbody>
@@ -236,18 +278,18 @@ export function FatturePage() {
                     <tr key={fattura.id}>
                       <td>{fattura.id}</td>
                       <td>{fattura.numero}</td>
-                      <td>{fattura.clienteId || fattura.cliente?.id}</td>
                       <td>
-                        {new Date(fattura.data).toLocaleDateString("it-IT")}
+                        {fattura.cliente?.ragioneSociale || fattura.clienteId}
                       </td>
-                      <td>€ {fattura.importo?.toFixed(2)}</td>
-                      <td>{fattura.stato?.nome || "N/A"}</td>
-                      <td>{fattura.descrizione || "-"}</td>
+                      <td>{fattura.cliente.id}</td>
+                      <td>{formatDate(fattura.data)}</td>
+                      <td>{formatCurrency(fattura.importo)}</td>
+                      <td>{fattura.statoFattura?.statoFattura || "N/A"}</td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="text-center">
+                    <td colSpan="6" className="text-center">
                       Nessuna fattura trovata
                     </td>
                   </tr>
@@ -257,38 +299,40 @@ export function FatturePage() {
           </div>
 
           {/* Paginazione */}
-          <div className="d-flex justify-content-between align-items-center">
-            <span>
-              Pagina {page + 1} di {totalPages}
-            </span>
-            <Pagination>
-              <Pagination.First
-                onClick={() => setPage(0)}
-                disabled={page === 0}
-              />
-              <Pagination.Prev
-                onClick={() => setPage(page - 1)}
-                disabled={page === 0}
-              />
-              {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => (
-                <Pagination.Item
-                  key={i}
-                  active={i === page}
-                  onClick={() => setPage(i)}
-                >
-                  {i + 1}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next
-                onClick={() => setPage(page + 1)}
-                disabled={page === totalPages - 1}
-              />
-              <Pagination.Last
-                onClick={() => setPage(totalPages - 1)}
-                disabled={page === totalPages - 1}
-              />
-            </Pagination>
-          </div>
+          {totalPages > 0 && (
+            <div className="d-flex justify-content-between align-items-center mt-4">
+              <span>
+                Pagina {page + 1} di {totalPages}
+              </span>
+              <Pagination>
+                <Pagination.First
+                  onClick={() => setPage(0)}
+                  disabled={page === 0}
+                />
+                <Pagination.Prev
+                  onClick={() => setPage(page - 1)}
+                  disabled={page === 0}
+                />
+                {getPaginationItems().map((pageNum) => (
+                  <Pagination.Item
+                    key={pageNum}
+                    active={pageNum === page}
+                    onClick={() => setPage(pageNum)}
+                  >
+                    {pageNum + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() => setPage(page + 1)}
+                  disabled={page === totalPages - 1}
+                />
+                <Pagination.Last
+                  onClick={() => setPage(totalPages - 1)}
+                  disabled={page === totalPages - 1}
+                />
+              </Pagination>
+            </div>
+          )}
         </>
       )}
     </Container>

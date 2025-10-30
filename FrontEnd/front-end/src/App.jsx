@@ -21,7 +21,7 @@ export function App() {
 
   return (
     <BrowserRouter>
-      <NavBar />
+      {isAuth && <NavBar />}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route

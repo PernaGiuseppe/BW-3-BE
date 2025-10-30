@@ -21,15 +21,16 @@ export function ClientiPage() {
   const [totalPages, setTotalPages] = useState(0);
   const [sortBy, setSortBy] = useState("ragioneSociale");
 
-  // Filtri
+  // Filtri secondo la consegna
   const [filters, setFilters] = useState({
-    fatturatoMin: "",
-    fatturatoMax: "",
+    contieneNome: "",
+    fatturatoAnnualeMin: "",
+    fatturatoAnnualeMax: "",
     dataInserimentoInizio: "",
     dataInserimentoFine: "",
     dataUltimoContattoInizio: "",
     dataUltimoContattoFine: "",
-    nomeContiene: "",
+    provinciaSedeLegale: "",
   });
 
   const loadClienti = async () => {
@@ -42,6 +43,7 @@ export function ClientiPage() {
       });
 
       const result = await getClienti(cleanFilters, page, size, sortBy);
+      console.log(result);
       setClienti(result.content || []);
       setTotalPages(result.totalPages || 0);
     } catch (err) {
@@ -72,36 +74,76 @@ export function ClientiPage() {
 
   const handleResetFilters = () => {
     setFilters({
-      fatturatoMin: "",
-      fatturatoMax: "",
+      contieneNome: "",
+      fatturatoAnnualeMin: "",
+      fatturatoAnnualeMax: "",
       dataInserimentoInizio: "",
       dataInserimentoFine: "",
       dataUltimoContattoInizio: "",
       dataUltimoContattoFine: "",
-      nomeContiene: "",
+      provinciaSedeLegale: "",
     });
     setPage(0);
     setSortBy("ragioneSociale");
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return "-";
+    try {
+      return new Date(dateString).toLocaleDateString("it-IT");
+    } catch {
+      return dateString;
+    }
+  };
+
+  const formatCurrency = (value) => {
+    if (!value) return "€ 0,00";
+    return new Intl.NumberFormat("it-IT", {
+      style: "currency",
+      currency: "EUR",
+    }).format(value);
+  };
+
+  const getPaginationItems = () => {
+    const items = [];
+    const maxPagesToShow = 5;
+    let startPage = Math.max(0, page - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow);
+
+    if (endPage - startPage < maxPagesToShow) {
+      startPage = Math.max(0, endPage - maxPagesToShow);
+    }
+
+    for (let i = startPage; i < endPage; i++) {
+      items.push(i);
+    }
+    return items;
+  };
+
   return (
     <Container fluid className="py-4">
-      <h1 className="mb-4">Gestione Clienti</h1>
+      <div className="mb-4">
+        <h1 className="mb-1">Gestione Clienti</h1>
+      </div>
 
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && (
+        <Alert variant="danger" onClose={() => setError("")} dismissible>
+          {error}
+        </Alert>
+      )}
 
       {/* Sezione Filtri */}
-      <div className="bg-light p-4 rounded mb-4">
-        <h5 className="mb-3">Filtri</h5>
+      <div className="bg-light p-4 rounded mb-4 shadow-sm">
+        <h5 className="mb-3 fw-bold">Filtri di Ricerca</h5>
         <Form onSubmit={handleSearch}>
           <Row className="mb-3">
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Nome contiene</Form.Label>
+                <Form.Label className="fw-semibold">Nome contiene</Form.Label>
                 <Form.Control
                   type="text"
-                  name="nomeContiene"
-                  value={filters.nomeContiene}
+                  name="contieneNome"
+                  value={filters.contieneNome}
                   onChange={handleFilterChange}
                   placeholder="Ricerca per nome"
                 />
@@ -109,11 +151,13 @@ export function ClientiPage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Fatturato Min</Form.Label>
+                <Form.Label className="fw-semibold">
+                  Fatturato Annuale Min (€)
+                </Form.Label>
                 <Form.Control
                   type="number"
-                  name="fatturatoMin"
-                  value={filters.fatturatoMin}
+                  name="fatturatoAnnualeMin"
+                  value={filters.fatturatoAnnualeMin}
                   onChange={handleFilterChange}
                   placeholder="0.00"
                   step="0.01"
@@ -122,11 +166,13 @@ export function ClientiPage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Fatturato Max</Form.Label>
+                <Form.Label className="fw-semibold">
+                  Fatturato Annuale Max (€)
+                </Form.Label>
                 <Form.Control
                   type="number"
-                  name="fatturatoMax"
-                  value={filters.fatturatoMax}
+                  name="fatturatoAnnualeMax"
+                  value={filters.fatturatoAnnualeMax}
                   onChange={handleFilterChange}
                   placeholder="9999999.99"
                   step="0.01"
@@ -135,15 +181,16 @@ export function ClientiPage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Ordina per</Form.Label>
-                <Form.Select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="ragioneSociale">Ragione Sociale</option>
-                  <option value="fatturato">Fatturato</option>
-                  <option value="dataInserimento">Data Inserimento</option>
-                </Form.Select>
+                <Form.Label className="fw-semibold">
+                  Provincia Sede Legale
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  name="provinciaSedeLegale"
+                  value={filters.provinciaSedeLegale}
+                  onChange={handleFilterChange}
+                  placeholder="Es. Milano"
+                />
               </Form.Group>
             </Col>
           </Row>
@@ -151,7 +198,9 @@ export function ClientiPage() {
           <Row className="mb-3">
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Data Inserimento Da</Form.Label>
+                <Form.Label className="fw-semibold">
+                  Data Inserimento Da
+                </Form.Label>
                 <Form.Control
                   type="date"
                   name="dataInserimentoInizio"
@@ -162,7 +211,9 @@ export function ClientiPage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Data Inserimento A</Form.Label>
+                <Form.Label className="fw-semibold">
+                  Data Inserimento A
+                </Form.Label>
                 <Form.Control
                   type="date"
                   name="dataInserimentoFine"
@@ -173,7 +224,9 @@ export function ClientiPage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Ultimo Contatto Da</Form.Label>
+                <Form.Label className="fw-semibold">
+                  Ultimo Contatto Da
+                </Form.Label>
                 <Form.Control
                   type="date"
                   name="dataUltimoContattoInizio"
@@ -184,13 +237,35 @@ export function ClientiPage() {
             </Col>
             <Col md={6} lg={3}>
               <Form.Group>
-                <Form.Label>Ultimo Contatto A</Form.Label>
+                <Form.Label className="fw-semibold">
+                  Ultimo Contatto A
+                </Form.Label>
                 <Form.Control
                   type="date"
                   name="dataUltimoContattoFine"
                   value={filters.dataUltimoContattoFine}
                   onChange={handleFilterChange}
                 />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Row className="mb-3">
+            <Col lg={3}>
+              <Form.Group>
+                <Form.Label className="fw-semibold">Ordina per</Form.Label>
+                <Form.Select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="ragioneSociale">Ragione Sociale</option>
+                  <option value="fatturatoAnnuale">Fatturato Annuale</option>
+                  <option value="dataInserimento">Data Inserimento</option>
+                  <option value="dataUltimoContatto">Ultimo Contatto</option>
+                  <option value="provinciaSedeLegale">
+                    Provincia Sede Legale
+                  </option>
+                </Form.Select>
               </Form.Group>
             </Col>
           </Row>
@@ -208,7 +283,7 @@ export function ClientiPage() {
 
       {/* Tabella Clienti */}
       {loading ? (
-        <div className="text-center">
+        <div className="text-center py-5">
           <Spinner animation="border" />
         </div>
       ) : (
@@ -220,9 +295,10 @@ export function ClientiPage() {
                   <th>ID</th>
                   <th>Ragione Sociale</th>
                   <th>Partita IVA</th>
-                  <th>Fatturato</th>
+                  <th>Fatturato Annuale</th>
                   <th>Data Inserimento</th>
                   <th>Ultimo Contatto</th>
+                  <th>Provincia Sede Legale</th>
                 </tr>
               </thead>
               <tbody>
@@ -232,24 +308,17 @@ export function ClientiPage() {
                       <td>{cliente.id}</td>
                       <td>{cliente.ragioneSociale}</td>
                       <td>{cliente.partitaIva}</td>
-                      <td>€ {cliente.fatturato?.toFixed(2)}</td>
+                      <td>{formatCurrency(cliente.fatturatoAnnuale)}</td>
+                      <td>{formatDate(cliente.dataInserimento)}</td>
+                      <td>{formatDate(cliente.dataUltimoContatto)}</td>
                       <td>
-                        {new Date(cliente.dataInserimento).toLocaleDateString(
-                          "it-IT"
-                        )}
-                      </td>
-                      <td>
-                        {cliente.dataUltimoContatto
-                          ? new Date(
-                              cliente.dataUltimoContatto
-                            ).toLocaleDateString("it-IT")
-                          : "-"}
+                        {cliente.indirizzoLegale?.comune.provincia.nome || "-"}
                       </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6" className="text-center">
+                    <td colSpan="7" className="text-center">
                       Nessun cliente trovato
                     </td>
                   </tr>
@@ -259,38 +328,40 @@ export function ClientiPage() {
           </div>
 
           {/* Paginazione */}
-          <div className="d-flex justify-content-between align-items-center">
-            <span>
-              Pagina {page + 1} di {totalPages}
-            </span>
-            <Pagination>
-              <Pagination.First
-                onClick={() => setPage(0)}
-                disabled={page === 0}
-              />
-              <Pagination.Prev
-                onClick={() => setPage(page - 1)}
-                disabled={page === 0}
-              />
-              {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => (
-                <Pagination.Item
-                  key={i}
-                  active={i === page}
-                  onClick={() => setPage(i)}
-                >
-                  {i + 1}
-                </Pagination.Item>
-              ))}
-              <Pagination.Next
-                onClick={() => setPage(page + 1)}
-                disabled={page === totalPages - 1}
-              />
-              <Pagination.Last
-                onClick={() => setPage(totalPages - 1)}
-                disabled={page === totalPages - 1}
-              />
-            </Pagination>
-          </div>
+          {totalPages > 0 && (
+            <div className="d-flex justify-content-between align-items-center mt-4">
+              <span>
+                Pagina {page + 1} di {totalPages}
+              </span>
+              <Pagination>
+                <Pagination.First
+                  onClick={() => setPage(0)}
+                  disabled={page === 0}
+                />
+                <Pagination.Prev
+                  onClick={() => setPage(page - 1)}
+                  disabled={page === 0}
+                />
+                {getPaginationItems().map((pageNum) => (
+                  <Pagination.Item
+                    key={pageNum}
+                    active={pageNum === page}
+                    onClick={() => setPage(pageNum)}
+                  >
+                    {pageNum + 1}
+                  </Pagination.Item>
+                ))}
+                <Pagination.Next
+                  onClick={() => setPage(page + 1)}
+                  disabled={page === totalPages - 1}
+                />
+                <Pagination.Last
+                  onClick={() => setPage(totalPages - 1)}
+                  disabled={page === totalPages - 1}
+                />
+              </Pagination>
+            </div>
+          )}
         </>
       )}
     </Container>

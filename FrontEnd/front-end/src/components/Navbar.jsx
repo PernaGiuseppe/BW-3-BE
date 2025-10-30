@@ -13,7 +13,7 @@ export function NavBar() {
   return (
     <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
       <Navbar.Brand href="/" className="ms-3 fw-bold">
-        Admin Dashboard
+        EPIC ENERGY SERVICES
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
