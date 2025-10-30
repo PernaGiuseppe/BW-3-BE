@@ -4,6 +4,7 @@ import buildweek5.BW_3_BE.payloads.ErrorsDTO;
 import buildweek5.BW_3_BE.payloads.ErrorsWithListDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -47,5 +48,10 @@ public class ExceptionsHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorsDTO handleIllegalArgument(IllegalArgumentException ex){
         return new ErrorsDTO("L'id non può essere nullo", LocalDateTime.now());
+    }
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorsDTO handleHttpMessage(HttpMessageNotReadableException ex){
+        return new ErrorsDTO("Valore inserito non valido", LocalDateTime.now());
     }
 }

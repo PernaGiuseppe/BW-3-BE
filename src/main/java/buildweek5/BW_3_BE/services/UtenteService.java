@@ -93,6 +93,9 @@ public class UtenteService {
         return utentiRepository.findByEmail(email).orElseThrow(()->new NotFoundException("L'utente con email non è stato trovato"));
     }
     public Utente udpdateRuolo(Long id, Ruolo nuovoRuolo){
+        if (nuovoRuolo != Ruolo.ADMIN && nuovoRuolo != Ruolo.USER) {
+            throw new BadRequestException("Il ruolo specificato non è valido. I ruoli consentiti sono ADMIN e USER.");
+        }
         Utente found = this.findById(id);
         if (found.getRuoli() == null) {
             found.setRuoli(new ArrayList<>());
