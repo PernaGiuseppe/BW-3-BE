@@ -32,22 +32,11 @@ public class AuthController {
     public LoginResponseDTO login(@RequestBody @Validated LoginDTO payload, BindingResult validationResult) {
         if(validationResult.hasErrors()){
             List<String> errorMessages = validationResult.getFieldErrors().stream().
-                    map(fieldError -> fieldError.getField() + " :" + fieldError.getDefaultMessage()).toList();
-            throw new NotValidException(errorMessages);
+                    map(fieldError -> fieldError.getField() + " :" + fieldError.getDefaultMessage()).toList();throw new NotValidException(errorMessages);
         }
         return new LoginResponseDTO(this.authService.checkCredentialsAndGenerateToken(payload));
     }
 
-    @PostMapping("/register")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Utente save(@RequestBody @Validated UtenteDTO body, BindingResult validationResult) {
-        if(validationResult.hasErrors()){
-            List<String> errorMessages = validationResult.getFieldErrors().stream().
-                    map(fieldError -> fieldError.getField() + " :" + fieldError.getDefaultMessage()).toList();
-            throw new NotValidException(errorMessages);
-        }
 
-        return this.utentiService.saveUtenteUser(body, Ruolo.USER);
-    }
 }
 
