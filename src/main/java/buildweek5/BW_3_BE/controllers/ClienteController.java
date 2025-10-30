@@ -29,7 +29,6 @@ public class ClienteController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAuthority('ADMIN')")
     public Cliente createCliente(@RequestBody @Validated ClienteDTO body, BindingResult validationResult){
         if(validationResult.hasErrors()){
             List<String> errorMessages = validationResult.getFieldErrors().stream().
