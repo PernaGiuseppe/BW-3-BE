@@ -4,18 +4,19 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "stato_fattura")
+@Table(name = "ruolo_utente")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class StatoFattura {
+public class RuoloUtente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private String statoFattura;
+    private Ruolo ruoloUtente;
 }

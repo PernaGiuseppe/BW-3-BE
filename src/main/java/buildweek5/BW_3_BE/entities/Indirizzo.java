@@ -9,11 +9,13 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"cliente", "comune"})
+@ToString
+//(exclude = {"comune"})
 public class Indirizzo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(nullable = false)
@@ -27,15 +29,9 @@ public class Indirizzo {
     @Column(nullable = false, length = 5)
     private String cap;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private TipoIndirizzo tipoIndirizzo;
-
     @ManyToOne
     @JoinColumn(name = "comune_id", nullable = false)
     private Comune comune;
 
-    @ManyToOne
-    @JoinColumn(name = "cliente_id")
-    private Cliente cliente;
+
 }

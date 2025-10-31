@@ -17,6 +17,7 @@ public class Fattura {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -25,12 +26,12 @@ public class Fattura {
     @Column(nullable = false)
     private LocalDate data;
 
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal importo;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private StatoFattura stato;
+    @ManyToOne
+    @JoinColumn(name = "stato_fattura_id", nullable = false)
+    private StatoFattura statoFattura;
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)

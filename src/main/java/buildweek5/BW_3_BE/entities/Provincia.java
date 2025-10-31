@@ -8,17 +8,30 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
+@AllArgsConstructor
+@Builder
 public class Provincia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
+    @Column(name = "id_provincia")
     private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String sigla;
 
     @Column(nullable = false)
     private String nome;
 
-    @Column(nullable = false, unique = true, length = 2)
-    private String sigla;
+    @Column(nullable = false)
+    private String regione;
+
+    public Provincia(String sigla, String nome, String regione) {
+        this.sigla = sigla;
+        this.nome = nome;
+        this.regione = regione;
+    }
+
 }

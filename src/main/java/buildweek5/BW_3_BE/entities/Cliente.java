@@ -3,6 +3,7 @@ package buildweek5.BW_3_BE.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -16,6 +17,7 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
     private Long id;
 
     @Column(nullable = false)
@@ -33,12 +35,12 @@ public class Cliente {
     private LocalDate dataUltimoContatto;
 
     @Column(precision = 15, scale = 2)
-    private double fatturatoAnnuale;
+    private BigDecimal fatturatoAnnuale;
 
     @Column(unique = true)
     private String pec;
 
-    private int telefono;
+    private String telefono;
 
     private String emailContatto;
 
@@ -53,4 +55,13 @@ public class Cliente {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoCliente tipoCliente;
+
+    @OneToOne
+    @JoinColumn(name = "indirizzo_legale_id", nullable = false)
+    private Indirizzo indirizzoLegale;
+
+    @OneToOne
+    @JoinColumn(name = "indirizzo_operativo_id", nullable = false)
+    private Indirizzo indirizzoOperativo;
+
 }
