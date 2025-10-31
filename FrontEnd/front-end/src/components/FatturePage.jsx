@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react";
 import {
   Container,
   Form,
@@ -9,128 +9,128 @@ import {
   Spinner,
   Alert,
   Pagination,
-} from 'react-bootstrap'
-import { getFatture } from '../services/fattureService'
+} from "react-bootstrap";
+import { getFatture } from "../services/fattureService";
 
 export function FatturePage() {
-  const [fatture, setFatture] = useState([])
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [page, setPage] = useState(0)
-  const [size, setSize] = useState(10)
-  const [totalPages, setTotalPages] = useState(0)
-  const [sortBy, setSortBy] = useState('numero')
+  const [fatture, setFatture] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
+  const [sortBy, setSortBy] = useState("numero");
 
   // Filtri secondo la consegna
   const [filters, setFilters] = useState({
-    clienteId: '',
-    statoId: '',
-    dataInizio: '',
-    dataFine: '',
-    anno: '',
-    importoMin: '',
-    importoMax: '',
-  })
+    clienteId: "",
+    statoId: "",
+    dataInizio: "",
+    dataFine: "",
+    anno: "",
+    importoMin: "",
+    importoMax: "",
+  });
 
   const loadFatture = async (
     currentPage = page,
     currentSortBy = sortBy,
     currentFilters = filters
   ) => {
-    setLoading(true)
-    setError('')
+    setLoading(true);
+    setError("");
     try {
-      const cleanFilters = {}
+      const cleanFilters = {};
       Object.entries(currentFilters).forEach(([key, value]) => {
-        if (value) cleanFilters[key] = value
-      })
+        if (value) cleanFilters[key] = value;
+      });
 
       const result = await getFatture(
         cleanFilters,
         currentPage,
         size,
         currentSortBy
-      )
-      setFatture(result.content || [])
-      setTotalPages(result.totalPages || 0)
+      );
+      setFatture(result.content || []);
+      setTotalPages(result.totalPages || 0);
     } catch (err) {
-      setError('Errore nel caricamento delle fatture')
-      console.error(err)
+      setError("Errore nel caricamento delle fatture");
+      console.error(err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   // Carica solo quando cambiano page o size
   useEffect(() => {
-    loadFatture()
-  }, [page, size])
+    loadFatture();
+  }, [page, size]);
 
   const handleFilterChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFilters((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleSearch = (e) => {
-    e.preventDefault()
-    setPage(0)
-    loadFatture(0, sortBy, filters)
-  }
+    e.preventDefault();
+    setPage(0);
+    loadFatture(0, sortBy, filters);
+  };
 
   const handleResetFilters = async () => {
     const resetFilters = {
-      clienteId: '',
-      statoId: '',
-      dataInizio: '',
-      dataFine: '',
-      anno: '',
-      importoMin: '',
-      importoMax: '',
-    }
+      clienteId: "",
+      statoId: "",
+      dataInizio: "",
+      dataFine: "",
+      anno: "",
+      importoMin: "",
+      importoMax: "",
+    };
 
-    setFilters(resetFilters)
-    setPage(0)
-    setSortBy('numero')
+    setFilters(resetFilters);
+    setPage(0);
+    setSortBy("numero");
 
     // Ricarica i dati con i filtri resettati passandoli come parametri
-    await loadFatture(0, 'numero', resetFilters)
-  }
+    await loadFatture(0, "numero", resetFilters);
+  };
 
   const formatDate = (dateString) => {
-    if (!dateString) return '-'
+    if (!dateString) return "-";
     try {
-      return new Date(dateString).toLocaleDateString('it-IT')
+      return new Date(dateString).toLocaleDateString("it-IT");
     } catch {
-      return dateString
+      return dateString;
     }
-  }
+  };
 
   const formatCurrency = (value) => {
-    if (!value) return '€ 0,00'
-    return new Intl.NumberFormat('it-IT', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(value)
-  }
+    if (!value) return "€ 0,00";
+    return new Intl.NumberFormat("it-IT", {
+      style: "currency",
+      currency: "EUR",
+    }).format(value);
+  };
 
   const getPaginationItems = () => {
-    const items = []
-    const maxPagesToShow = 5
-    let startPage = Math.max(0, page - Math.floor(maxPagesToShow / 2))
-    let endPage = Math.min(totalPages, startPage + maxPagesToShow)
+    const items = [];
+    const maxPagesToShow = 5;
+    let startPage = Math.max(0, page - Math.floor(maxPagesToShow / 2));
+    let endPage = Math.min(totalPages, startPage + maxPagesToShow);
 
     if (endPage - startPage < maxPagesToShow) {
-      startPage = Math.max(0, endPage - maxPagesToShow)
+      startPage = Math.max(0, endPage - maxPagesToShow);
     }
 
     for (let i = startPage; i < endPage; i++) {
-      items.push(i)
+      items.push(i);
     }
-    return items
-  }
+    return items;
+  };
 
   return (
     <Container fluid className="py-4">
@@ -142,7 +142,7 @@ export function FatturePage() {
       </div>
 
       {error && (
-        <Alert variant="danger" onClose={() => setError('')} dismissible>
+        <Alert variant="danger" onClose={() => setError("")} dismissible>
           {error}
         </Alert>
       )}
@@ -229,7 +229,7 @@ export function FatturePage() {
                   name="importoMax"
                   value={filters.importoMax}
                   onChange={handleFilterChange}
-                  placeholder="9999999.99"
+                  placeholder="0.00"
                   step="0.01"
                 />
               </Form.Group>
@@ -306,7 +306,7 @@ export function FatturePage() {
                       <td>{fattura.cliente.id}</td>
                       <td>{formatDate(fattura.data)}</td>
                       <td>{formatCurrency(fattura.importo)}</td>
-                      <td>{fattura.statoFattura?.statoFattura || 'N/A'}</td>
+                      <td>{fattura.statoFattura?.statoFattura || "N/A"}</td>
                       <td>{fattura.statoFattura?.id}</td>
                     </tr>
                   ))
@@ -359,5 +359,5 @@ export function FatturePage() {
         </>
       )}
     </Container>
-  )
+  );
 }
