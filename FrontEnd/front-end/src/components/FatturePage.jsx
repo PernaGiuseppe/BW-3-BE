@@ -52,9 +52,10 @@ export function FatturePage() {
     }
   }
 
+  // Carica solo quando cambiano page o size
   useEffect(() => {
     loadFatture()
-  }, [page, size, sortBy])
+  }, [page, size])
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target
@@ -70,8 +71,8 @@ export function FatturePage() {
     loadFatture()
   }
 
-  const handleResetFilters = () => {
-    setFilters({
+  const handleResetFilters = async () => {
+    const resetFilters = {
       clienteId: '',
       statoId: '',
       dataInizio: '',
@@ -79,9 +80,14 @@ export function FatturePage() {
       anno: '',
       importoMin: '',
       importoMax: '',
-    })
+    }
+
+    setFilters(resetFilters)
     setPage(0)
     setSortBy('numero')
+
+    // Ricarica i dati con i filtri resettati
+    await loadFatture()
   }
 
   const formatDate = (dateString) => {
@@ -247,7 +253,11 @@ export function FatturePage() {
             <Button variant="primary" type="submit">
               Applica Filtri
             </Button>
-            <Button variant="secondary" onClick={handleResetFilters}>
+            <Button
+              variant="secondary"
+              onClick={handleResetFilters}
+              type="button"
+            >
               Reset Filtri
             </Button>
           </div>
@@ -268,9 +278,11 @@ export function FatturePage() {
                   <th>ID</th>
                   <th>Numero</th>
                   <th>Cliente</th>
+                  <th>Id cliente</th>
                   <th>Data</th>
                   <th>Importo</th>
-                  <th>Stato</th>
+                  <th>Stato fattura</th>
+                  <th>Stato fattura ID</th>
                 </tr>
               </thead>
               <tbody>
@@ -282,9 +294,11 @@ export function FatturePage() {
                       <td>
                         {fattura.cliente?.ragioneSociale || fattura.clienteId}
                       </td>
+                      <td>{fattura.cliente.id}</td>
                       <td>{formatDate(fattura.data)}</td>
                       <td>{formatCurrency(fattura.importo)}</td>
-                      <td>{fattura.statoFattura?.nome || 'N/A'}</td>
+                      <td>{fattura.statoFattura?.statoFattura || 'N/A'}</td>
+                      <td>{fattura.statoFattura?.id}</td>
                     </tr>
                   ))
                 ) : (

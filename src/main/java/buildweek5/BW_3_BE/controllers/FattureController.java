@@ -1,9 +1,7 @@
 package buildweek5.BW_3_BE.controllers;
 
-import buildweek5.BW_3_BE.entities.Cliente;
 import buildweek5.BW_3_BE.entities.Fattura;
 import buildweek5.BW_3_BE.exceptions.NotValidException;
-import buildweek5.BW_3_BE.payloads.ClienteDTO;
 import buildweek5.BW_3_BE.payloads.FatturaDT0;
 import buildweek5.BW_3_BE.payloads.FatturaFilterPayload;
 import buildweek5.BW_3_BE.services.FattureService;
@@ -28,14 +26,15 @@ public class FattureController {
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    public Fattura createFattura(@RequestBody @Validated FatturaDT0 body, BindingResult validationResult){
-        if(validationResult.hasErrors()){
+    public Fattura createFattura(@RequestBody @Validated FatturaDT0 body, BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
             List<String> errorMessages = validationResult.getFieldErrors().stream().
                     map(fieldError -> fieldError.getField() + " :" + fieldError.getDefaultMessage()).toList();
             throw new NotValidException(errorMessages);
         }
         return fattureService.createFattura(body);
     }
+
     @GetMapping
     public Page<Fattura> getAllFatture(@RequestParam(required = false) Long clienteId,
                                        @RequestParam(required = false) Long statoFatturaId,
@@ -46,12 +45,8 @@ public class FattureController {
                                        @RequestParam(required = false) BigDecimal importoMax,
                                        @RequestParam(defaultValue = "0") int page,
                                        @RequestParam(defaultValue = "10") int size,
-                                       @RequestParam(defaultValue = "numero") String sortBy){
-        System.out.println("ENTRATO NEL METODO getAllFatture");
-        System.out.println("=== DEBUG FILTRI ===");
-        System.out.println("clienteId ricevuto: " + clienteId);
-        System.out.println("statoFatturaId ricevuto: " + statoFatturaId);
-        System.out.println("importoMin ricevuto: " + importoMin);
+                                       @RequestParam(defaultValue = "numero") String sortBy) {
+
         FatturaFilterPayload filters = new FatturaFilterPayload();
         filters.setClienteId(clienteId);
         filters.setStatoFatturaId(statoFatturaId);
@@ -62,24 +57,26 @@ public class FattureController {
         filters.setImportoMax(importoMax);
         return fattureService.findAllFiltered(filters, page, size, sortBy);
     }
+
     @GetMapping("{id}")
-    public Fattura findById(@PathVariable Long id){
+    public Fattura findById(@PathVariable Long id) {
         return fattureService.findById(id);
     }
 
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Fattura updateFattura(@PathVariable Long id, @RequestBody @Validated FatturaDT0 body, BindingResult validationResults){
-        if(validationResults.hasErrors()){
+    public Fattura updateFattura(@PathVariable Long id, @RequestBody @Validated FatturaDT0 body, BindingResult validationResults) {
+        if (validationResults.hasErrors()) {
             List<String> errorMessages = validationResults.getFieldErrors().stream().
                     map(fieldError -> fieldError.getField() + " :" + fieldError.getDefaultMessage()).toList();
             throw new NotValidException(errorMessages);
         }
         return fattureService.updateFattura(id, body);
     }
+
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) {
         fattureService.deleteFattura(id);
     }
 }

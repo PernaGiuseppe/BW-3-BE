@@ -1,38 +1,36 @@
-import { useState } from "react";
-import { Container, Form, Button, Card, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { login } from "../services/authService";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from 'react'
+import { Container, Form, Button, Card, Alert } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { login } from '../services/authService'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 export function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+    e.preventDefault()
+    setError('')
+    setLoading(true)
 
     try {
-      await login(email, password);
-      navigate("/clienti");
+      await login(email, password)
+      navigate('/clienti')
     } catch (err) {
-      setError(err.message || "Errore di login. Controlla le credenziali.");
+      setError(err.message || 'Errore di login. Controlla le credenziali.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <Container className="d-flex justify-content-center align-items-center min-vh-100">
-      <Card style={{ width: "100%", maxWidth: "400px" }} className="shadow">
+      <Card style={{ width: '100%', maxWidth: '400px' }} className="shadow">
         <Card.Body className="p-5">
-          <Card.Title className="text-center mb-4 fs-3">
-            Admin Dashboard
-          </Card.Title>
+          <Card.Title className="text-center mb-4 fs-3">Accedi</Card.Title>
 
           {error && <Alert variant="danger">{error}</Alert>}
 
@@ -65,11 +63,11 @@ export function LoginPage() {
               className="w-100"
               disabled={loading}
             >
-              {loading ? "Accesso in corso..." : "Accedi"}
+              {loading ? 'Accesso in corso...' : 'Accedi'}
             </Button>
           </Form>
         </Card.Body>
       </Card>
     </Container>
-  );
+  )
 }

@@ -33,16 +33,26 @@ export function ClientiPage() {
     provinciaSedeLegale: '',
   })
 
-  const loadClienti = async () => {
+  // Carica solo quando cambiano page, size, sortBy o filtri applicati
+  const loadClienti = async (
+    currentPage = page,
+    currentSortBy = sortBy,
+    currentFilters = filters
+  ) => {
     setLoading(true)
     setError('')
     try {
       const cleanFilters = {}
-      Object.entries(filters).forEach(([key, value]) => {
+      Object.entries(currentFilters).forEach(([key, value]) => {
         if (value) cleanFilters[key] = value
       })
 
-      const result = await getClienti(cleanFilters, page, size, sortBy)
+      const result = await getClienti(
+        cleanFilters,
+        currentPage,
+        size,
+        currentSortBy
+      )
       setClienti(result.content || [])
       setTotalPages(result.totalPages || 0)
     } catch (err) {
@@ -53,9 +63,10 @@ export function ClientiPage() {
     }
   }
 
+  // Carica solo quando cambiano page o size
   useEffect(() => {
-    loadClienti()
-  }, [page, size, sortBy])
+    loadClienti(page, sortBy, filters)
+  }, [page, size])
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target
@@ -68,11 +79,11 @@ export function ClientiPage() {
   const handleSearch = (e) => {
     e.preventDefault()
     setPage(0)
-    loadClienti()
+    loadClienti(0, sortBy, filters)
   }
 
-  const handleResetFilters = () => {
-    setFilters({
+  const handleResetFilters = async () => {
+    const resetFilters = {
       contieneNome: '',
       fatturatoAnnualeMin: '',
       fatturatoAnnualeMax: '',
@@ -81,9 +92,18 @@ export function ClientiPage() {
       dataUltimoContattoInizio: '',
       dataUltimoContattoFine: '',
       provinciaSedeLegale: '',
-    })
+    }
+
+    setFilters(resetFilters)
     setPage(0)
     setSortBy('ragioneSociale')
+
+    // Ricarica i dati con i filtri resettati
+    await loadClienti(0, 'ragioneSociale', resetFilters)
+  }
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value)
   }
 
   const formatDate = (dateString) => {
@@ -139,6 +159,20 @@ export function ClientiPage() {
         <h5 className="mb-3 fw-bold">Filtri di Ricerca</h5>
         <Form onSubmit={handleSearch}>
           <Row className="mb-3">
+            <Col lg={3}>
+              <Form.Group>
+                <Form.Label className="fw-semibold">Ordina per</Form.Label>
+                <Form.Select value={sortBy} onChange={handleSortChange}>
+                  <option value="ragioneSociale">Ragione Sociale</option>
+                  <option value="fatturatoAnnuale">Fatturato Annuale</option>
+                  <option value="dataInserimento">Data Inserimento</option>
+                  <option value="dataUltimoContatto">Ultimo Contatto</option>
+                  <option value="provinciaSedeLegale">
+                    Provincia Sede Legale
+                  </option>
+                </Form.Select>
+              </Form.Group>
+            </Col>
             <Col md={6} lg={3}>
               <Form.Group>
                 <Form.Label className="fw-semibold">Nome contiene</Form.Label>
@@ -178,20 +212,6 @@ export function ClientiPage() {
                   onChange={handleFilterChange}
                   placeholder="9999999.99"
                   step="0.01"
-                />
-              </Form.Group>
-            </Col>
-            <Col md={6} lg={3}>
-              <Form.Group>
-                <Form.Label className="fw-semibold">
-                  Provincia Sede Legale
-                </Form.Label>
-                <Form.Control
-                  type="text"
-                  name="provinciaSedeLegale"
-                  value={filters.provinciaSedeLegale}
-                  onChange={handleFilterChange}
-                  placeholder="Es. Milano"
                 />
               </Form.Group>
             </Col>
@@ -251,32 +271,15 @@ export function ClientiPage() {
               </Form.Group>
             </Col>
           </Row>
-
-          <Row className="mb-3">
-            <Col lg={3}>
-              <Form.Group>
-                <Form.Label className="fw-semibold">Ordina per</Form.Label>
-                <Form.Select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                >
-                  <option value="ragioneSociale">Ragione Sociale</option>
-                  <option value="fatturatoAnnuale">Fatturato Annuale</option>
-                  <option value="dataInserimento">Data Inserimento</option>
-                  <option value="dataUltimoContatto">Ultimo Contatto</option>
-                  <option value="provinciaSedeLegale">
-                    Provincia Sede Legale
-                  </option>
-                </Form.Select>
-              </Form.Group>
-            </Col>
-          </Row>
-
           <div className="d-flex gap-2">
             <Button variant="primary" type="submit">
               Applica Filtri
             </Button>
-            <Button variant="secondary" onClick={handleResetFilters}>
+            <Button
+              variant="secondary"
+              onClick={handleResetFilters}
+              type="button"
+            >
               Reset Filtri
             </Button>
           </div>
@@ -313,7 +316,10 @@ export function ClientiPage() {
                       <td>{formatCurrency(cliente.fatturatoAnnuale)}</td>
                       <td>{formatDate(cliente.dataInserimento)}</td>
                       <td>{formatDate(cliente.dataUltimoContatto)}</td>
-                      <td>{cliente.indirizzoLegale?.provincia || '-'}</td>
+                      <td>
+                        {cliente.indirizzoLegale?.comune?.provincia?.nome ||
+                          '-'}
+                      </td>
                     </tr>
                   ))
                 ) : (

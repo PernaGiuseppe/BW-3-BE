@@ -9,6 +9,7 @@ const getAuthHeader = () => ({
   },
 })
 
+// src/services/clienteService.js
 export const getClienti = async (
   filters = {},
   page = 0,
@@ -19,9 +20,20 @@ export const getClienti = async (
     const params = new URLSearchParams()
     params.append('page', page.toString())
     params.append('size', size.toString())
-    params.append('sortBy', sortBy)
 
-    // Mapping dei filtri alle proprietà corrette
+    let endpoint = '/clienti'
+
+    // Se l'utente vuole ordinare per provincia, usa l'endpoint dedicato
+    if (sortBy === 'provinciaSedeLegale') {
+      endpoint = '/clienti/ordinati-per-provincia'
+      params.append('direction', 'asc') // o 'desc' se vuoi
+      // Non aggiungere sortBy perché questo endpoint ordina sempre per provincia
+    } else {
+      // Usa l'endpoint normale con sortBy
+      params.append('sortBy', sortBy)
+    }
+
+    // Aggiungi tutti gli altri filtri
     if (filters.fatturatoAnnualeMin) {
       params.append('fatturatoMin', filters.fatturatoAnnualeMin)
     }
@@ -48,7 +60,7 @@ export const getClienti = async (
     }
 
     const response = await axios.get(
-      `${API_URL}/clienti?${params.toString()}`,
+      `${API_URL}${endpoint}?${params.toString()}`,
       getAuthHeader()
     )
     return response.data

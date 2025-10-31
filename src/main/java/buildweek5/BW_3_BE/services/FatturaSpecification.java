@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FatturaSpecification {
-    public static Specification<Fattura> byFilters(FatturaFilterPayload filters){
+    public static Specification<Fattura> byFilters(FatturaFilterPayload filters) {
         return ((root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class FatturaSpecification {
             if (filters.getAnno() != null) {
                 predicates.add(
                         criteriaBuilder.equal(
-                                criteriaBuilder.function("year", Integer.class, root.get("data")),
+                                criteriaBuilder.function("DATE_PART", Integer.class, criteriaBuilder.literal("year"), root.get("data")), // <-- RIGA CORRETTA
                                 filters.getAnno()
                         )
                 );

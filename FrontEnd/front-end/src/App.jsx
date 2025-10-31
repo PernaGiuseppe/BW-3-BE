@@ -1,27 +1,34 @@
-import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { LoginPage } from "./components/LoginPage";
-import { ClientiPage } from "./components/ClientiPage";
-import { FatturePage } from "./components/FatturePage";
-import { NavBar } from "./components/Navbar";
-import { isAuthenticated } from "./services/authService";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Footer from "./components/Footer";
+import { useEffect, useState } from 'react'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from 'react-router-dom'
+import { LoginPage } from './components/LoginPage'
+import { ClientiPage } from './components/ClientiPage'
+import { FatturePage } from './components/FatturePage'
+import { NavBar } from './components/Navbar'
+import { isAuthenticated } from './services/authService'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Footer from './components/Footer'
 
 function ProtectedRoute({ element }) {
-  return isAuthenticated() ? element : <Navigate to="/login" />;
+  return isAuthenticated() ? element : <Navigate to="/login" />
 }
 
-export function App() {
-  const [isAuth, setIsAuth] = useState(isAuthenticated());
+function AppContent() {
+  const [isAuth, setIsAuth] = useState(isAuthenticated())
+  const location = useLocation()
 
   useEffect(() => {
-    setIsAuth(isAuthenticated());
-  }, []);
+    setIsAuth(isAuthenticated())
+  }, [location])
 
   return (
-    <BrowserRouter>
-      <NavBar />
+    <>
+      {isAuth && <NavBar />}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route
@@ -40,8 +47,16 @@ export function App() {
         />
       </Routes>
       <Footer />
-    </BrowserRouter>
-  );
+    </>
+  )
 }
 
-export default App;
+export function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
+    </BrowserRouter>
+  )
+}
+
+export default App
