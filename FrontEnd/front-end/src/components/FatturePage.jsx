@@ -32,16 +32,25 @@ export function FatturePage() {
     importoMax: '',
   })
 
-  const loadFatture = async () => {
+  const loadFatture = async (
+    currentPage = page,
+    currentSortBy = sortBy,
+    currentFilters = filters
+  ) => {
     setLoading(true)
     setError('')
     try {
       const cleanFilters = {}
-      Object.entries(filters).forEach(([key, value]) => {
+      Object.entries(currentFilters).forEach(([key, value]) => {
         if (value) cleanFilters[key] = value
       })
 
-      const result = await getFatture(cleanFilters, page, size, sortBy)
+      const result = await getFatture(
+        cleanFilters,
+        currentPage,
+        size,
+        currentSortBy
+      )
       setFatture(result.content || [])
       setTotalPages(result.totalPages || 0)
     } catch (err) {
@@ -68,7 +77,7 @@ export function FatturePage() {
   const handleSearch = (e) => {
     e.preventDefault()
     setPage(0)
-    loadFatture()
+    loadFatture(0, sortBy, filters)
   }
 
   const handleResetFilters = async () => {
@@ -86,8 +95,8 @@ export function FatturePage() {
     setPage(0)
     setSortBy('numero')
 
-    // Ricarica i dati con i filtri resettati
-    await loadFatture()
+    // Ricarica i dati con i filtri resettati passandoli come parametri
+    await loadFatture(0, 'numero', resetFilters)
   }
 
   const formatDate = (dateString) => {
@@ -125,8 +134,8 @@ export function FatturePage() {
 
   return (
     <Container fluid className="py-4">
-      <div className="mb-4">
-        <h1 className="mb-1">Gestione Fatture</h1>
+      <div>
+        <h2 className="mb-1">Gestione Fatture</h2>
         <p className="text-muted">
           Visualizza e gestisci le fatture con filtri avanzati
         </p>
@@ -303,7 +312,7 @@ export function FatturePage() {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="6" className="text-center">
+                    <td colSpan="8" className="text-center">
                       Nessuna fattura trovata
                     </td>
                   </tr>

@@ -141,8 +141,8 @@ export function ClientiPage() {
 
   return (
     <Container fluid className="py-4">
-      <div className="mb-4">
-        <h1 className="mb-1">Gestione Clienti</h1>
+      <div>
+        <h2 className="mb-1">Gestione Clienti</h2>
         <p className="text-muted">
           Visualizza e gestisci i clienti con filtri avanzati
         </p>
