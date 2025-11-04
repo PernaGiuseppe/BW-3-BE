@@ -229,7 +229,7 @@ export function FatturePage() {
                   name="importoMax"
                   value={filters.importoMax}
                   onChange={handleFilterChange}
-                  placeholder="9999999.99"
+                  placeholder="0.00"
                   step="0.01"
                 />
               </Form.Group>
